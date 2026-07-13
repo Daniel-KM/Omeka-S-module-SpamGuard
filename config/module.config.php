@@ -13,6 +13,7 @@ return [
         'invokables' => [
             'honeypot' => SpamStrategy\Honeypot::class,
             'urlCount' => SpamStrategy\UrlCount::class,
+            'keyword' => SpamStrategy\Keyword::class,
         ],
     ],
     'form_elements' => [
@@ -35,6 +36,7 @@ return [
             'spamguard_enabled_strategies' => [
                 'honeypot',
                 'urlCount',
+                'keyword',
             ],
             'spamguard_min_delay' => 1,
             'spamguard_max_urls' => 3,

@@ -19,6 +19,7 @@ class ConfigForm extends Form
                     'value_options' => [
                         'honeypot' => 'Honeypot (trap field)', // @translate
                         'urlCount' => 'Excessive URL count', // @translate
+                        'keyword' => 'Forbidden keywords', // @translate
                     ],
                 ],
                 'attributes' => [
