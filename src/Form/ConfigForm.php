@@ -23,6 +23,7 @@ class ConfigForm extends Form
                         'tooFast' => 'Too fast submission', // @translate
                         'rateLimit' => 'Rate limit per IP/session', // @translate
                         'powChallenge' => 'Proof-of-Work challenge (hashcash)', // @translate
+                        'dnsMx' => 'Email DNS MX check', // @translate
                     ],
                 ],
                 'attributes' => [

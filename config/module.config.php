@@ -17,6 +17,7 @@ return [
             'tooFast' => SpamStrategy\TooFast::class,
             'rateLimit' => SpamStrategy\RateLimit::class,
             'powChallenge' => SpamStrategy\PowChallenge::class,
+            'dnsMx' => SpamStrategy\DnsMx::class,
         ],
     ],
     'form_elements' => [
@@ -43,6 +44,7 @@ return [
                 'tooFast',
                 'rateLimit',
                 'powChallenge',
+                'dnsMx',
             ],
             'spamguard_min_delay' => 1,
             'spamguard_max_urls' => 3,
