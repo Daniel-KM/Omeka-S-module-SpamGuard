@@ -18,6 +18,7 @@ class ConfigForm extends Form
                     'label' => 'Enabled spam strategies', // @translate
                     'value_options' => [
                         'honeypot' => 'Honeypot (trap field)', // @translate
+                        'urlCount' => 'Excessive URL count', // @translate
                     ],
                 ],
                 'attributes' => [
@@ -35,6 +36,19 @@ class ConfigForm extends Form
                     'id' => 'spamguard_min_delay',
                     'min' => 0,
                     'value' => 1,
+                ],
+            ])
+            ->add([
+                'name' => 'spamguard_max_urls',
+                'type' => CommonElement\OptionalNumber::class,
+                'options' => [
+                    'label' => 'Maximum URL count', // @translate
+                    'info' => 'Above this threshold, the submission is considered spam.', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'spamguard_max_urls',
+                    'min' => 0,
+                    'value' => 3,
                 ],
             ])
         ;
