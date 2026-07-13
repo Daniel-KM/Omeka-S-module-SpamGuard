@@ -22,6 +22,7 @@ class ConfigForm extends Form
                         'keyword' => 'Forbidden keywords', // @translate
                         'tooFast' => 'Too fast submission', // @translate
                         'rateLimit' => 'Rate limit per IP/session', // @translate
+                        'powChallenge' => 'Proof-of-Work challenge (hashcash)', // @translate
                     ],
                 ],
                 'attributes' => [
@@ -65,6 +66,19 @@ class ConfigForm extends Form
                     'id' => 'spamguard_rate_limit_seconds',
                     'min' => 0,
                     'value' => 10,
+                ],
+            ])
+            ->add([
+                'name' => 'spamguard_pow_difficulty',
+                'type' => CommonElement\OptionalNumber::class,
+                'options' => [
+                    'label' => 'Proof-of-Work difficulty (number of leading hex zeros)', // @translate
+                    'info' => 'Number of leading hex zeros required on the hash (sha256). The higher the value, the more expensive the client-side computation.', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'spamguard_pow_difficulty',
+                    'min' => 0,
+                    'value' => 4,
                 ],
             ])
         ;

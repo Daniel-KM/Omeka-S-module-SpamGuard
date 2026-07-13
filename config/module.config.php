@@ -16,6 +16,7 @@ return [
             'keyword' => SpamStrategy\Keyword::class,
             'tooFast' => SpamStrategy\TooFast::class,
             'rateLimit' => SpamStrategy\RateLimit::class,
+            'powChallenge' => SpamStrategy\PowChallenge::class,
         ],
     ],
     'form_elements' => [
@@ -41,10 +42,12 @@ return [
                 'keyword',
                 'tooFast',
                 'rateLimit',
+                'powChallenge',
             ],
             'spamguard_min_delay' => 1,
             'spamguard_max_urls' => 3,
             'spamguard_rate_limit_seconds' => 10,
+            'spamguard_pow_difficulty' => 4,
         ],
     ],
 ];
