@@ -1,0 +1,92 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/Form/ConfigForm.php:18
+msgid "Enabled spam strategies"
+msgstr ""
+
+#: src/Form/ConfigForm.php:20
+msgid "Honeypot (trap field)"
+msgstr ""
+
+#: src/Form/ConfigForm.php:21
+msgid "Excessive URL count"
+msgstr ""
+
+#: src/Form/ConfigForm.php:22
+msgid "Forbidden keywords"
+msgstr ""
+
+#: src/Form/ConfigForm.php:23
+msgid "Too fast submission"
+msgstr ""
+
+#: src/Form/ConfigForm.php:24
+msgid "Rate limit per IP/session"
+msgstr ""
+
+#: src/Form/ConfigForm.php:25
+msgid "Proof-of-Work challenge (hashcash)"
+msgstr ""
+
+#: src/Form/ConfigForm.php:26
+msgid "Email DNS MX check"
+msgstr ""
+
+#: src/Form/ConfigForm.php:27
+msgid "Client IP DNSBL check"
+msgstr ""
+
+#: src/Form/ConfigForm.php:28 src/Form/ConfigForm.php:103
+msgid "Banned IPs"
+msgstr ""
+
+#: src/Form/ConfigForm.php:39
+msgid "Minimum submission delay (seconds)"
+msgstr ""
+
+#: src/Form/ConfigForm.php:40
+msgid "Minimum delay between form load and submission."
+msgstr ""
+
+#: src/Form/ConfigForm.php:52
+msgid "Maximum URL count"
+msgstr ""
+
+#: src/Form/ConfigForm.php:53
+msgid "Above this threshold, the submission is considered spam."
+msgstr ""
+
+#: src/Form/ConfigForm.php:65
+msgid "Rate-limit interval (seconds)"
+msgstr ""
+
+#: src/Form/ConfigForm.php:66
+msgid "Minimum delay between two submissions from the same IP or session."
+msgstr ""
+
+#: src/Form/ConfigForm.php:78
+msgid "Proof-of-Work difficulty (number of leading hex zeros)"
+msgstr ""
+
+#: src/Form/ConfigForm.php:79
+msgid ""
+"Number of leading hex zeros required on the hash (sha256). The higher the "
+"value, the more expensive the client-side computation."
+msgstr ""
+
+#: src/Form/ConfigForm.php:91
+msgid "DNSBL zones"
+msgstr ""
+
+#: src/Form/ConfigForm.php:92
+msgid "One per line, like zen.spamhaus.org."
+msgstr ""
+
+#: src/Form/ConfigForm.php:104
+msgid "One per line, CIDR accepted."
+msgstr ""

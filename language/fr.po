@@ -1,0 +1,106 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: Daniel Berthereau <Daniel.fr@Berthereau.net>\n"
+"Language-Team: \n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.6\n"
+
+#: src/Form/ConfigForm.php:18
+msgid "Enabled spam strategies"
+msgstr "Stratégies anti-spam activées"
+
+#: src/Form/ConfigForm.php:20
+msgid "Honeypot (trap field)"
+msgstr "Honeypot (champ piège)"
+
+#: src/Form/ConfigForm.php:21
+msgid "Excessive URL count"
+msgstr "Nombre excessif d’URL"
+
+#: src/Form/ConfigForm.php:22
+msgid "Forbidden keywords"
+msgstr "Mots-clés interdits"
+
+#: src/Form/ConfigForm.php:23
+msgid "Too fast submission"
+msgstr "Soumission trop rapide"
+
+#: src/Form/ConfigForm.php:24
+msgid "Rate limit per IP/session"
+msgstr "Limite de requêtes par adresse IP/session"
+
+#: src/Form/ConfigForm.php:25
+msgid "Proof-of-Work challenge (hashcash)"
+msgstr "Défi de « preuve de travail » (hashcash)"
+
+#: src/Form/ConfigForm.php:26
+msgid "Email DNS MX check"
+msgstr ""
+"Vérification des enregistrements MX DNS pour la messagerie électronique"
+
+#: src/Form/ConfigForm.php:27
+msgid "Client IP DNSBL check"
+msgstr ""
+"Vérification de l’adresse IP du client par rapport à une liste noire DNSBL"
+
+#: src/Form/ConfigForm.php:28 src/Form/ConfigForm.php:103
+msgid "Banned IPs"
+msgstr "Adresses IP bloquées"
+
+#: src/Form/ConfigForm.php:39
+msgid "Minimum submission delay (seconds)"
+msgstr "Délai minimal de soumission (en secondes)"
+
+#: src/Form/ConfigForm.php:40
+msgid "Minimum delay between form load and submission."
+msgstr "Délai minimum entre le chargement du formulaire et son envoi."
+
+#: src/Form/ConfigForm.php:52
+msgid "Maximum URL count"
+msgstr "Nombre maximal d’URL"
+
+#: src/Form/ConfigForm.php:53
+msgid "Above this threshold, the submission is considered spam."
+msgstr "Au-delà de ce seuil, la soumission est considérée comme du spam."
+
+#: src/Form/ConfigForm.php:65
+msgid "Rate-limit interval (seconds)"
+msgstr "Intervalle de limitation de débit (en secondes)"
+
+#: src/Form/ConfigForm.php:66
+msgid "Minimum delay between two submissions from the same IP or session."
+msgstr ""
+"Délai minimum entre deux soumissions provenant de la même adresse IP ou de "
+"la même session."
+
+#: src/Form/ConfigForm.php:78
+msgid "Proof-of-Work difficulty (number of leading hex zeros)"
+msgstr ""
+"Difficulté de la preuve de travail (nombre de zéros hexadécimaux en tête)"
+
+#: src/Form/ConfigForm.php:79
+msgid ""
+"Number of leading hex zeros required on the hash (sha256). The higher the "
+"value, the more expensive the client-side computation."
+msgstr ""
+"Nombre de zéros hexadécimaux requis au début du hachage (sha256). Plus cette "
+"valeur est élevée, plus le calcul côté client est coûteux."
+
+#: src/Form/ConfigForm.php:91
+msgid "DNSBL zones"
+msgstr "Zones DNSBL"
+
+#: src/Form/ConfigForm.php:92
+msgid "One per line, like zen.spamhaus.org."
+msgstr "Une par ligne, comme zen.spamhaus.org."
+
+#: src/Form/ConfigForm.php:104
+msgid "One per line, CIDR accepted."
+msgstr "Une par ligne, CIDR acceptées."
