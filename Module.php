@@ -73,6 +73,7 @@ class Module extends AbstractModule
         $settings->set('spamguard_enabled_strategies', $formData['spamguard_enabled_strategies'] ?? []);
         $settings->set('spamguard_min_delay', (int) ($formData['spamguard_min_delay'] ?? 1));
         $settings->set('spamguard_max_urls', (int) ($formData['spamguard_max_urls'] ?? 3));
+        $settings->set('spamguard_rate_limit_seconds', (int) ($formData['spamguard_rate_limit_seconds'] ?? 10));
 
         return true;
     }

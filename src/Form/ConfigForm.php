@@ -21,6 +21,7 @@ class ConfigForm extends Form
                         'urlCount' => 'Excessive URL count', // @translate
                         'keyword' => 'Forbidden keywords', // @translate
                         'tooFast' => 'Too fast submission', // @translate
+                        'rateLimit' => 'Rate limit per IP/session', // @translate
                     ],
                 ],
                 'attributes' => [
@@ -51,6 +52,19 @@ class ConfigForm extends Form
                     'id' => 'spamguard_max_urls',
                     'min' => 0,
                     'value' => 3,
+                ],
+            ])
+            ->add([
+                'name' => 'spamguard_rate_limit_seconds',
+                'type' => CommonElement\OptionalNumber::class,
+                'options' => [
+                    'label' => 'Rate-limit interval (seconds)', // @translate
+                    'info' => 'Minimum delay between two submissions from the same IP or session.', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'spamguard_rate_limit_seconds',
+                    'min' => 0,
+                    'value' => 10,
                 ],
             ])
         ;
