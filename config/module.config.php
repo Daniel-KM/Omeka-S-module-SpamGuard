@@ -14,6 +14,7 @@ return [
             'honeypot' => SpamStrategy\Honeypot::class,
             'urlCount' => SpamStrategy\UrlCount::class,
             'keyword' => SpamStrategy\Keyword::class,
+            'tooFast' => SpamStrategy\TooFast::class,
         ],
     ],
     'form_elements' => [
@@ -37,6 +38,7 @@ return [
                 'honeypot',
                 'urlCount',
                 'keyword',
+                'tooFast',
             ],
             'spamguard_min_delay' => 1,
             'spamguard_max_urls' => 3,

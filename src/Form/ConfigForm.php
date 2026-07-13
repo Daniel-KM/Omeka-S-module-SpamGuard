@@ -20,6 +20,7 @@ class ConfigForm extends Form
                         'honeypot' => 'Honeypot (trap field)', // @translate
                         'urlCount' => 'Excessive URL count', // @translate
                         'keyword' => 'Forbidden keywords', // @translate
+                        'tooFast' => 'Too fast submission', // @translate
                     ],
                 ],
                 'attributes' => [
