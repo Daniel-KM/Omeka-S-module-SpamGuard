@@ -11,6 +11,7 @@ return [
     ],
     'spam_guard_strategies' => [
         'invokables' => [
+            'honeypot' => SpamStrategy\Honeypot::class,
         ],
     ],
     'form_elements' => [
@@ -30,6 +31,10 @@ return [
     ],
     'spamguard' => [
         'config' => [
+            'spamguard_enabled_strategies' => [
+                'honeypot',
+            ],
+            'spamguard_min_delay' => 1,
         ],
     ],
 ];

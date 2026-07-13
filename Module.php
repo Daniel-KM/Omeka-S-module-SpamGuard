@@ -70,6 +70,9 @@ class Module extends AbstractModule
 
         $formData = $form->getData();
 
+        $settings->set('spamguard_enabled_strategies', $formData['spamguard_enabled_strategies'] ?? []);
+        $settings->set('spamguard_min_delay', (int) ($formData['spamguard_min_delay'] ?? 1));
+
         return true;
     }
 }
