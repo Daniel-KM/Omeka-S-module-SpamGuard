@@ -1,0 +1,41 @@
+{
+    "name": "daniel-km/omeka-s-module-spam-guard",
+    "type": "omeka-s-module",
+    "description": "Module for Omeka S: Check form submissions against spam using various detection strategies (honeypot, keywords, rate limit, proof-of-work, DNSBL…).",
+    "keywords": [
+        "Omeka S",
+        "Omeka S module",
+        "security",
+        "anti-spam",
+        "bot",
+        "ai"
+    ],
+    "license": "CECILL-2.1",
+    "homepage": "https://gitlab.com/Daniel-KM/Omeka-S-module-SpamGuard",
+    "authors": [
+        {
+            "name": "Daniel Berthereau",
+            "email": "Daniel.packagist@Berthereau.net"
+        }
+    ],
+    "support": {
+        "issues": "https://gitlab.com/Daniel-KM/Omeka-S-module-SpamGuard/-/issues",
+        "forum": "https://forum.omeka.org/"
+    },
+    "_require (not set until Omeka S merges PR #2432)": {
+        "omeka/omeka-s": "^4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "SpamGuard\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SpamGuardTest\\": "tests/SpamGuardTest/"
+        }
+    },
+    "extra": {
+        "installer-name": "SpamGuard"
+    }
+}
