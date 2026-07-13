@@ -18,6 +18,7 @@ return [
             'rateLimit' => SpamStrategy\RateLimit::class,
             'powChallenge' => SpamStrategy\PowChallenge::class,
             'dnsMx' => SpamStrategy\DnsMx::class,
+            'dnsbl' => SpamStrategy\Dnsbl::class,
         ],
     ],
     'form_elements' => [
@@ -45,11 +46,15 @@ return [
                 'rateLimit',
                 'powChallenge',
                 'dnsMx',
+                'dnsbl',
             ],
             'spamguard_min_delay' => 1,
             'spamguard_max_urls' => 3,
             'spamguard_rate_limit_seconds' => 10,
             'spamguard_pow_difficulty' => 4,
+            'spamguard_dnsbl_zones' => [
+                'zen.spamhaus.org',
+            ],
         ],
     ],
 ];

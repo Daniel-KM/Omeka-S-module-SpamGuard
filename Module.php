@@ -75,6 +75,7 @@ class Module extends AbstractModule
         $settings->set('spamguard_max_urls', (int) ($formData['spamguard_max_urls'] ?? 3));
         $settings->set('spamguard_rate_limit_seconds', (int) ($formData['spamguard_rate_limit_seconds'] ?? 10));
         $settings->set('spamguard_pow_difficulty', (int) ($formData['spamguard_pow_difficulty'] ?? 4));
+        $settings->set('spamguard_dnsbl_zones', $formData['spamguard_dnsbl_zones'] ?? []);
 
         return true;
     }

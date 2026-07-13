@@ -3,8 +3,8 @@
 namespace SpamGuard\Form;
 
 use Common\Form\Element as CommonElement;
-use Laminas\Form\Element;
 use Laminas\Form\Form;
+use Omeka\Form\Element as OmekaElement;
 
 class ConfigForm extends Form
 {
@@ -24,6 +24,7 @@ class ConfigForm extends Form
                         'rateLimit' => 'Rate limit per IP/session', // @translate
                         'powChallenge' => 'Proof-of-Work challenge (hashcash)', // @translate
                         'dnsMx' => 'Email DNS MX check', // @translate
+                        'dnsbl' => 'Client IP DNSBL check', // @translate
                     ],
                 ],
                 'attributes' => [
@@ -80,6 +81,18 @@ class ConfigForm extends Form
                     'id' => 'spamguard_pow_difficulty',
                     'min' => 0,
                     'value' => 4,
+                ],
+            ])
+            ->add([
+                'name' => 'spamguard_dnsbl_zones',
+                'type' => OmekaElement\ArrayTextarea::class,
+                'options' => [
+                    'label' => 'DNSBL zones', // @translate
+                    'info' => 'One per line, like zen.spamhaus.org.', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'spamguard_dnsbl_zones',
+                    'rows' => 5,
                 ],
             ])
         ;
