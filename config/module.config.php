@@ -19,6 +19,7 @@ return [
             'powChallenge' => SpamStrategy\PowChallenge::class,
             'dnsMx' => SpamStrategy\DnsMx::class,
             'dnsbl' => SpamStrategy\Dnsbl::class,
+            'bannedIp' => SpamStrategy\BannedIp::class,
         ],
     ],
     'form_elements' => [
@@ -47,6 +48,7 @@ return [
                 'powChallenge',
                 'dnsMx',
                 'dnsbl',
+                'bannedIp',
             ],
             'spamguard_min_delay' => 1,
             'spamguard_max_urls' => 3,
@@ -55,6 +57,7 @@ return [
             'spamguard_dnsbl_zones' => [
                 'zen.spamhaus.org',
             ],
+            'spamguard_banned_ips' => [],
         ],
     ],
 ];

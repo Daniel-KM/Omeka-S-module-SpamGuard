@@ -25,6 +25,7 @@ class ConfigForm extends Form
                         'powChallenge' => 'Proof-of-Work challenge (hashcash)', // @translate
                         'dnsMx' => 'Email DNS MX check', // @translate
                         'dnsbl' => 'Client IP DNSBL check', // @translate
+                        'bannedIp' => 'Banned IPs', // @translate
                     ],
                 ],
                 'attributes' => [
@@ -92,6 +93,18 @@ class ConfigForm extends Form
                 ],
                 'attributes' => [
                     'id' => 'spamguard_dnsbl_zones',
+                    'rows' => 5,
+                ],
+            ])
+            ->add([
+                'name' => 'spamguard_banned_ips',
+                'type' => OmekaElement\ArrayTextarea::class,
+                'options' => [
+                    'label' => 'Banned IPs', // @translate
+                    'info' => 'One per line, CIDR accepted.', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'spamguard_banned_ips',
                     'rows' => 5,
                 ],
             ])
