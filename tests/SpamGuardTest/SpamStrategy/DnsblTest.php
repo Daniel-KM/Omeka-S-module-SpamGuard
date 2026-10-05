@@ -48,7 +48,7 @@ class DnsblTest extends TestCase
     {
         $called = false;
         $s = new Dnsbl(function ($q) use (&$called) { $called = true; return true; });
-        $this->assertNull($s->check(new SpamContext(ip: '2001:db8::1'), ['zones' => ['zen.spamhaus.org']]));
+        $this->assertNull($s->check(new SpamContext(ip: 'not-an-ip'), ['zones' => ['zen.spamhaus.org']]));
         $this->assertFalse($called);
     }
 
@@ -62,12 +62,35 @@ class DnsblTest extends TestCase
         $listed ? $this->assertIsArray($r) : $this->assertNull($r);
     }
 
+    /**
+     * @dataProvider policyCodeProvider
+     */
+    public function testPolicyCodesAreIgnoredForSpamhausOnly(string $zone, bool $listed): void
+    {
+        $s = new Dnsbl(fn ($q) => ['127.0.0.10']);
+        $r = $s->check(new SpamContext(ip: '1.2.3.4'), ['zones' => [$zone]]);
+        $listed ? $this->assertIsArray($r) : $this->assertNull($r);
+    }
+
+    public function policyCodeProvider(): array
+    {
+        return [
+            'spamhaus zen' => ['zen.spamhaus.org', false],
+            'spamhaus dqs' => ['key.zen.dq.spamhaus.net', false],
+            'other list' => ['dnsbl.sorbs.net', true],
+            'lookalike domain' => ['zen.notspamhaus.org', true],
+        ];
+    }
+
     public function answerProvider(): array
     {
         return [
             'listed sbl' => [['127.0.0.2'], true],
             'listed xbl' => [['127.0.0.4'], true],
-            'listed among others' => [['127.255.255.254', '127.0.0.10'], true],
+            'listed among others' => [['127.255.255.254', '127.0.0.2'], true],
+            'policy block list only' => [['127.0.0.10'], false],
+            'policy block list isp' => [['127.0.0.11'], false],
+            'policy and sbl' => [['127.0.0.10', '127.0.0.2'], true],
             'not listed' => [[], false],
             'public resolver refused' => [['127.255.255.254'], false],
             'quota exceeded' => [['127.255.255.255'], false],
@@ -75,5 +98,36 @@ class DnsblTest extends TestCase
             'loopback' => [['127.0.0.1'], false],
             'unrelated address' => [['8.8.8.8'], false],
         ];
+    }
+
+    public function testIpv6IsQueriedAsReversedNibbles(): void
+    {
+        $queries = [];
+        $s = new Dnsbl(function ($q) use (&$queries) {
+            $queries[] = $q;
+            return ['127.0.0.2'];
+        });
+        $r = $s->check(new SpamContext(ip: '2001:db8::1'), ['zones' => ['sbl-xbl.spamhaus.org']]);
+        $this->assertIsArray($r);
+        $this->assertSame(
+            '1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.8.b.d.0.1.0.0.2.sbl-xbl.spamhaus.org',
+            $queries[0]
+        );
+    }
+
+    public function testPublicResolverRefusalIsLoggedOnce(): void
+    {
+        $logger = new class extends \Laminas\Log\Logger {
+            public array $warns = [];
+            public function warn($message, $extra = [])
+            {
+                $this->warns[] = $message;
+                return $this;
+            }
+        };
+        $s = new Dnsbl(fn ($q) => ['127.255.255.254'], $logger);
+        $s->check(new SpamContext(ip: '1.2.3.4'), ['zones' => ['zen.spamhaus.org']]);
+        $s->check(new SpamContext(ip: '1.2.3.5'), ['zones' => ['zen.spamhaus.org']]);
+        $this->assertCount(1, $logger->warns);
     }
 }

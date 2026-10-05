@@ -136,4 +136,38 @@ class KeywordTest extends TestCase
         $s = new Keyword();
         $this->assertNull($s->check(new SpamContext(), $this->settings()));
     }
+
+    /**
+     * @dataProvider evasionProvider
+     */
+    public function testEvasionsAreCaught(string $body): void
+    {
+        $r = (new Keyword())->check(new SpamContext(body: $body), ['keywords' => ['viagra']]);
+        $this->assertIsArray($r, $body);
+    }
+
+    public function evasionProvider(): array
+    {
+        return [
+            'accents' => ['buy vïàgra now'],
+            'zero width' => ["buy vi\u{200B}agra now"],
+            'spaced letters' => ['buy v i a g r a now'],
+            'dotted letters' => ['buy v.i.a.g.r.a now'],
+            'cyrillic lookalikes' => ['buy viаgrа now'],
+        ];
+    }
+
+    public function testShortKeywordIsNotSpread(): void
+    {
+        // A short keyword is matched as is, so the letters of "s.id" found in
+        // a sentence do not match.
+        $r = (new Keyword())->check(new SpamContext(body: 'this is id card'), ['keywords' => ['s.id']]);
+        $this->assertNull($r);
+    }
+
+    public function testLegitimateWordContainingKeywordIsNotMatched(): void
+    {
+        $r = (new Keyword())->check(new SpamContext(body: 'une entreprise spécialisée'), ['keywords' => ['cialis']]);
+        $this->assertNull($r);
+    }
 }

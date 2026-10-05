@@ -112,4 +112,48 @@ class SpamLogTest extends AbstractHttpControllerTestCase
             'is_spam' => (int) $row['is_spam'],
         ]);
     }
+
+    public function testCountRecentCountsSpamAndNotSpam(): void
+    {
+        $services = $this->getApplication()->getServiceManager();
+        $log = $services->get('SpamGuard\SpamLog');
+        $log->record(self::IP, 'test', ['honeypot'], true);
+        $log->record(self::IP, 'test', [], false);
+        $this->assertSame(2, $log->countRecent(self::IP, 10));
+        $this->assertSame(0, $log->countRecent(self::IP, 0));
+    }
+
+    public function testCheckerRecordsTheCleanSubmissionsToo(): void
+    {
+        $services = $this->getApplication()->getServiceManager();
+        $services->get('Omeka\Settings')->set('spamguard_enabled_strategies', ['honeypot']);
+        $checker = $services->build('SpamGuard\SpamChecker');
+        $checker->check(new \SpamGuard\SpamContext(ip: self::IP, extra: ['source' => 'comment']));
+        $row = $this->connection()->executeQuery(
+            'SELECT `reasons`, `is_spam` FROM `spam_log` WHERE `ip` = :ip',
+            ['ip' => self::IP]
+        )->fetchAssociative();
+        $this->assertNull($row['reasons']);
+        $this->assertSame(0, (int) $row['is_spam']);
+    }
+
+    public function testStatisticsAggregateReasonsSourcesAndDecisions(): void
+    {
+        $services = $this->getApplication()->getServiceManager();
+        $log = $services->get('SpamGuard\SpamLog');
+        $this->connection()->executeStatement('DELETE FROM `spam_log`');
+        $log->record(self::IP, 'contactus', ['honeypot', 'keyword'], true);
+        $log->record(self::IP, 'contactus', ['keyword'], true);
+        $log->record(self::IP, 'comment', [], false);
+        $log->record(self::IP, 'contactus', ['admin'], false);
+
+        $stats = $log->statistics(30);
+
+        $this->assertSame(3, $stats['total']);
+        $this->assertSame(2, $stats['spams']);
+        $this->assertSame(1, $stats['notSpamByAdmin']);
+        $this->assertSame(0, $stats['spamByAdmin']);
+        $this->assertSame(['keyword' => 2, 'honeypot' => 1], $stats['byReason']);
+        $this->assertSame(['comment' => ['total' => 1, 'spams' => 0], 'contactus' => ['total' => 2, 'spams' => 2]], $stats['bySource']);
+    }
 }
