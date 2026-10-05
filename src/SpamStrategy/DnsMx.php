@@ -11,7 +11,12 @@ class DnsMx extends AbstractSpamStrategy
 
     public function __construct(?callable $resolver = null)
     {
-        $this->resolver = $resolver ?? static fn (string $domain): bool => checkdnsrr($domain, 'MX');
+        // Without mx, the mail goes to the address records (rfc 5321, 5.1), so
+        // a domain with only an "A" or "AAAA" record is valid. A dns failure
+        // is not distinguishable from an absence, so the check stays lenient.
+        $this->resolver = $resolver ?? static fn (string $domain): bool => checkdnsrr($domain, 'MX')
+            || checkdnsrr($domain, 'A')
+            || checkdnsrr($domain, 'AAAA');
     }
 
     public function check(SpamContext $context, array $settings): ?array
