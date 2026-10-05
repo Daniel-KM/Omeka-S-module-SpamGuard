@@ -25,6 +25,7 @@ class ConfigForm extends Form
                         'powChallenge' => 'Proof-of-Work challenge (hashcash)', // @translate
                         'dnsMx' => 'Email DNS MX check', // @translate
                         'dnsbl' => 'Client IP DNSBL check', // @translate
+                        'linkTld' => 'Links to abused top level domains', // @translate
                         'bannedIp' => 'Banned IPs', // @translate
                         'ipReputation' => 'Reputation of the ip (recent spams of any module, see the trusted ips below)', // @translate
                     ],
@@ -95,6 +96,18 @@ class ConfigForm extends Form
                 'attributes' => [
                     'id' => 'spamguard_keywords',
                     'rows' => 10,
+                ],
+            ])
+            ->add([
+                'name' => 'spamguard_link_tlds',
+                'type' => OmekaElement\ArrayTextarea::class,
+                'options' => [
+                    'label' => 'Abused top level domains', // @translate
+                    'info' => 'One per line, without dot. A message containing a link to a domain ending with one of them is a spam. The bots rotate their domains every few hours, but stay on a few cheap top level domains.', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'spamguard_link_tlds',
+                    'rows' => 6,
                 ],
             ])
             ->add([

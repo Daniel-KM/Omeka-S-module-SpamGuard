@@ -25,6 +25,7 @@ return [
             'dnsMx' => SpamStrategy\DnsMx::class,
             'dnsbl' => SpamStrategy\Dnsbl::class,
             'bannedIp' => SpamStrategy\BannedIp::class,
+            'linkTld' => SpamStrategy\LinkTld::class,
         ],
     ],
     'form_elements' => [
@@ -54,6 +55,7 @@ return [
                 'dnsMx',
                 'dnsbl',
                 'bannedIp',
+                'linkTld',
             ],
             'spamguard_min_delay' => 2,
             'spamguard_max_urls' => 3,
@@ -106,6 +108,22 @@ return [
                 'viagra',
                 'x.co',
                 'zpr.io',
+            ],
+            // Top level domains abused by spammers. A link to one of them marks
+            // the message as spam.
+            'spamguard_link_tlds' => [
+                'bond',
+                'buzz',
+                'cfd',
+                'click',
+                'cyou',
+                'icu',
+                'monster',
+                'quest',
+                'rest',
+                'sbs',
+                'top',
+                'xyz',
             ],
             'spamguard_dnsbl_zones' => [
                 'zen.spamhaus.org',
