@@ -5,6 +5,7 @@ namespace SpamGuard;
 return [
     'service_manager' => [
         'factories' => [
+            'SpamGuard\FormToken' => Service\FormTokenFactory::class,
             'SpamGuard\SpamChecker' => Service\SpamCheckerFactory::class,
             'SpamGuard\SpamStrategyManager' => Service\SpamStrategyManagerFactory::class,
         ],
