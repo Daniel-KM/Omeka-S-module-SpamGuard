@@ -8,6 +8,11 @@ final class PowChallenge extends AbstractSpamStrategy
 {
     public function check(SpamContext $context, array $settings): ?array
     {
+        // The calling module may not issue any challenge, for example when its
+        // own option skips it, so a missing nonce must not be a spam then.
+        if (!empty($context->extra['powSkip'])) {
+            return null;
+        }
         $difficulty = (int) ($settings['difficulty'] ?? 4);
         $salt = $context->extra['powSalt'] ?? null;
         $nonce = $context->extra['powNonce'] ?? null;

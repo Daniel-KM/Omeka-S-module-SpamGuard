@@ -16,6 +16,11 @@ class DnsMx extends AbstractSpamStrategy
 
     public function check(SpamContext $context, array $settings): ?array
     {
+        // The calling module may disable the check with its own option. Without
+        // explicit value, the check applies.
+        if (array_key_exists('checkDnsMx', $context->extra) && !$context->extra['checkDnsMx']) {
+            return null;
+        }
         $email = (string) ($context->email ?? '');
         if ($email === '' || !str_contains($email, '@')) {
             return null;
