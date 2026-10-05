@@ -50,7 +50,7 @@ return [
                 'dnsbl',
                 'bannedIp',
             ],
-            'spamguard_min_delay' => 1,
+            'spamguard_min_delay' => 2,
             'spamguard_max_urls' => 3,
             'spamguard_rate_limit_seconds' => 10,
             'spamguard_pow_difficulty' => 4,
