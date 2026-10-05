@@ -2,82 +2,38 @@
 
 namespace SpamGuard;
 
-use Laminas\Mvc\Controller\AbstractController;
-use Laminas\View\Renderer\PhpRenderer;
+// Common may be installed but not registered in autoloader, in particular
+// during upgrade. So dynamically register all classes of the module.
+if (!defined('COMMON_PSR4_FALLBACK')) {
+    foreach ([
+        OMEKA_PATH . '/modules/Common/src',
+        OMEKA_PATH . '/composer-addons/modules/Common/src',
+        dirname(__DIR__) . '/Common/src',
+    ] as $commonSrc) {
+        if (file_exists($commonSrc . '/TraitModule.php')) {
+            define('COMMON_PSR4_FALLBACK', $commonSrc);
+            spl_autoload_register(static function ($class): void {
+                if (str_starts_with($class, 'Common\\')) {
+                    $file = COMMON_PSR4_FALLBACK . '/' . strtr(substr($class, 7), '\\', '/') . '.php';
+                    if (file_exists($file)) {
+                        require_once $file;
+                    }
+                }
+            });
+            break;
+        }
+    }
+}
+
+use Common\TraitModule;
 use Omeka\Module\AbstractModule;
 
+/**
+ * Spam Guard
+ */
 class Module extends AbstractModule
 {
-    public function getConfig()
-    {
-        return include __DIR__ . '/config/module.config.php';
-    }
+    use TraitModule;
 
-    public function install($serviceLocator)
-    {
-        $settings = $serviceLocator->get('Omeka\Settings');
-
-        $configLocal = include __DIR__ . '/config/module.config.php';
-        $configLocal = $configLocal['spamguard']['config'];
-
-        foreach ($configLocal as $key => $value) {
-            $settings->set($key, $value);
-        }
-    }
-
-    public function uninstall($serviceLocator)
-    {
-        $settings = $serviceLocator->get('Omeka\Settings');
-
-        $configLocal = include __DIR__ . '/config/module.config.php';
-        $configLocal = $configLocal['spamguard']['config'];
-
-        foreach (array_keys($configLocal) as $key) {
-            $settings->delete($key);
-        }
-    }
-
-    public function getConfigForm(PhpRenderer $renderer)
-    {
-        $formElementManager = $this->getServiceLocator()->get('FormElementManager');
-        $settings = $this->getServiceLocator()->get('Omeka\Settings');
-
-        $configLocal = include __DIR__ . '/config/module.config.php';
-        $configLocal = $configLocal['spamguard']['config'];
-
-        $values = [];
-        foreach ($configLocal as $key => $value) {
-            $values[$key] = $settings->get($key, $value);
-        }
-
-        $form = $formElementManager->get(Form\ConfigForm::class);
-        $form->setData($values);
-
-        return $renderer->formCollection($form, false);
-    }
-
-    public function handleConfigForm(AbstractController $controller)
-    {
-        $formElementManager = $this->getServiceLocator()->get('FormElementManager');
-        $settings = $this->getServiceLocator()->get('Omeka\Settings');
-
-        $form = $formElementManager->get(Form\ConfigForm::class);
-        $form->setData($controller->params()->fromPost());
-        if (!$form->isValid()) {
-            $controller->messenger()->addErrors($form->getMessages());
-            return false;
-        }
-
-        $formData = $form->getData();
-
-        $settings->set('spamguard_enabled_strategies', $formData['spamguard_enabled_strategies'] ?? []);
-        $settings->set('spamguard_min_delay', (int) ($formData['spamguard_min_delay'] ?? 1));
-        $settings->set('spamguard_max_urls', (int) ($formData['spamguard_max_urls'] ?? 3));
-        $settings->set('spamguard_rate_limit_seconds', (int) ($formData['spamguard_rate_limit_seconds'] ?? 10));
-        $settings->set('spamguard_pow_difficulty', (int) ($formData['spamguard_pow_difficulty'] ?? 4));
-        $settings->set('spamguard_dnsbl_zones', $formData['spamguard_dnsbl_zones'] ?? []);
-        $settings->set('spamguard_banned_ips', $formData['spamguard_banned_ips'] ?? []);
-
-        return true;
-    }
+    const NAMESPACE = __NAMESPACE__;
 }
