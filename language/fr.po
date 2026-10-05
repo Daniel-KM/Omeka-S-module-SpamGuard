@@ -12,6 +12,18 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.6\n"
 
+#: data/scripts/upgrade.php:50
+msgid "The spam keywords are now editable in the configuration form of the module. {count} keywords were imported from the files of the modules SpamGuard and Common, that are no longer read."
+msgstr "Les mots-clés de spam sont désormais modifiables dans le formulaire de configuration du module. {count} mots-clés ont été importés depuis les fichiers des modules SpamGuard et Common, qui ne sont plus pris en compte."
+
+#: data/scripts/upgrade.php:65
+msgid "A new strategy marks as spam the messages containing a link to a top level domain abused by spammers ({tlds}). The list can be adapted in the config form."
+msgstr "Une nouvelle stratégie marque spam les messages contenant un lien vers une extension connue pour les abus par les spammeurs ({tlds}). La liste peut être modifiée dans le formulaire de configuration."
+
+#: data/scripts/upgrade.php:76
+msgid "A new strategy, disabled by default, marks as spam a message sent from an ip that sent a spam detected by a reliable check in any module during the last hours. Before enabling it, add the networks of your institution to the trusted ips in the config form, since its visitors may share a few public ips."
+msgstr "Une nouvelle stratégie, désactivée par défaut, marque spam tout message provenant d'une adresse ip ayant envoyé un spam détecté par un contrôle fiable par un module au cours des dernières heures. Avant de l'activer, ajoutez les réseaux de votre établissement à la liste des adresses ip de confiance dans le formulaire de configuration, car ses visiteurs peuvent partager certaines adresses ip publiques."
+
 #: src/Form/ConfigForm.php:18
 msgid "Enabled spam strategies"
 msgstr "Stratégies anti-spam activées"
@@ -42,65 +54,96 @@ msgstr "Défi de « preuve de travail » (hashcash)"
 
 #: src/Form/ConfigForm.php:26
 msgid "Email DNS MX check"
-msgstr ""
-"Vérification des enregistrements MX DNS pour la messagerie électronique"
+msgstr "Vérification des enregistrements MX DNS pour la messagerie électronique"
 
 #: src/Form/ConfigForm.php:27
 msgid "Client IP DNSBL check"
-msgstr ""
-"Vérification de l’adresse IP du client par rapport à une liste noire DNSBL"
+msgstr "Vérification de l’adresse IP du client par rapport à une liste noire DNSBL"
 
-#: src/Form/ConfigForm.php:28 src/Form/ConfigForm.php:103
+#: src/Form/ConfigForm.php:28
+msgid "Links to abused top level domains"
+msgstr "Liens vers des extensions poubelle"
+
+#: src/Form/ConfigForm.php:29 src/Form/ConfigForm.php:155
 msgid "Banned IPs"
 msgstr "Adresses IP bloquées"
 
-#: src/Form/ConfigForm.php:39
+#: src/Form/ConfigForm.php:30
+msgid "Reputation of the ip (recent spams of any module, see the trusted ips below)"
+msgstr "Réputation de l'adresse ip (spams récents des modules ; voir les adresses ip de confiance ci-dessous)"
+
+#: src/Form/ConfigForm.php:41
 msgid "Minimum submission delay (seconds)"
 msgstr "Délai minimal de soumission (en secondes)"
 
-#: src/Form/ConfigForm.php:40
+#: src/Form/ConfigForm.php:42
 msgid "Minimum delay between form load and submission."
 msgstr "Délai minimum entre le chargement du formulaire et son envoi."
 
-#: src/Form/ConfigForm.php:52
+#: src/Form/ConfigForm.php:54
 msgid "Maximum URL count"
 msgstr "Nombre maximal d’URL"
 
-#: src/Form/ConfigForm.php:53
+#: src/Form/ConfigForm.php:55
 msgid "Above this threshold, the submission is considered spam."
 msgstr "Au-delà de ce seuil, la soumission est considérée comme du spam."
 
-#: src/Form/ConfigForm.php:65
+#: src/Form/ConfigForm.php:67
 msgid "Rate-limit interval (seconds)"
 msgstr "Intervalle de limitation de débit (en secondes)"
 
-#: src/Form/ConfigForm.php:66
+#: src/Form/ConfigForm.php:68
 msgid "Minimum delay between two submissions from the same IP or session."
-msgstr ""
-"Délai minimum entre deux soumissions provenant de la même adresse IP ou de "
-"la même session."
+msgstr "Délai minimum entre deux soumissions provenant de la même adresse IP ou de la même session."
 
-#: src/Form/ConfigForm.php:78
+#: src/Form/ConfigForm.php:80
 msgid "Proof-of-Work difficulty (number of leading hex zeros)"
-msgstr ""
-"Difficulté de la preuve de travail (nombre de zéros hexadécimaux en tête)"
+msgstr "Difficulté de la preuve de travail (nombre de zéros hexadécimaux en tête)"
 
-#: src/Form/ConfigForm.php:79
-msgid ""
-"Number of leading hex zeros required on the hash (sha256). The higher the "
-"value, the more expensive the client-side computation."
-msgstr ""
-"Nombre de zéros hexadécimaux requis au début du hachage (sha256). Plus cette "
-"valeur est élevée, plus le calcul côté client est coûteux."
+#: src/Form/ConfigForm.php:81
+msgid "Number of leading hex zeros required on the hash (sha256). The higher the value, the more expensive the client-side computation."
+msgstr "Nombre de zéros hexadécimaux requis au début du hachage (sha256). Plus cette valeur est élevée, plus le calcul côté client est coûteux."
 
-#: src/Form/ConfigForm.php:91
+#: src/Form/ConfigForm.php:93
+msgid "Spam keywords"
+msgstr "Mots-clés de spam"
+
+#: src/Form/ConfigForm.php:94
+msgid "One per line. A message whose subject or body contains one of them, as a whole word, is a spam. This list replaces the one of the module Common, that is no longer read. Check that a keyword is not a legitimate word of your collections before adding it."
+msgstr "Un par ligne. Tout message dont l'objet ou le corps contient l'un de ces mots, en entier, est considéré comme spam. Cette liste remplace celle du module « Common », qui n'est plus prise en compte. Vérifiez qu'un mot-clé ne figure pas parmi les mots légitimes de vos collections avant de l'ajouter."
+
+#: src/Form/ConfigForm.php:105
+msgid "Abused top level domains"
+msgstr "Extensions connues pour les abus"
+
+#: src/Form/ConfigForm.php:106
+msgid "One per line, without dot. A message containing a link to a domain ending with one of them is a spam. The bots rotate their domains every few hours, but stay on a few cheap top level domains."
+msgstr "Un par ligne, sans point. Tout message contenant un lien vers l'un de ces domaines est considéré comme spam. Les bots changent de domaine toutes les quelques heures, mais restent sur des domaines poubelle."
+
+#: src/Form/ConfigForm.php:117
 msgid "DNSBL zones"
 msgstr "Zones DNSBL"
 
-#: src/Form/ConfigForm.php:92
+#: src/Form/ConfigForm.php:118
 msgid "One per line, like zen.spamhaus.org."
 msgstr "Une par ligne, comme zen.spamhaus.org."
 
-#: src/Form/ConfigForm.php:104
+#: src/Form/ConfigForm.php:129
+msgid "Hours during which an ip that sent a spam is blocked"
+msgstr "Durée pendant laquelle une adresse ip ayant envoyé un spam est bloquée"
+
+#: src/Form/ConfigForm.php:130
+msgid "A message sent from an ip that sent a spam in any module during this number of hours is a spam too. Only the spams detected by reliable checks count (honeypot, keyword, link, dnsbl, banned ip, admin), not the ones based on timing. Keep it short: many visitors may share the same ip."
+msgstr "Un message envoyé depuis une adresse ip ayant déjà envoyé un spam dans n'importe quel module au cours de cette période est également considéré comme du spam. Seuls les spams détectés par des contrôles fiables sont pris en compte (honeypot, mot-clé, lien, DNSBL, adresse ip bannie, administrateur), et non ceux basés sur la durée. Le message doit être court : de nombreux visiteurs peuvent partager la même adresse ip."
+
+#: src/Form/ConfigForm.php:142
+msgid "Trusted ips, never blocked by the reputation"
+msgstr "Adresses ip de confiance, non bloquées via la réputation"
+
+#: src/Form/ConfigForm.php:143
+msgid "One ip or range (cidr) by line, for example the networks of the institution, whose visitors share a few public ips."
+msgstr "Une adresse ip ou une plage (cidr) par ligne, par exemple les réseaux de l'établissement, dont les visiteurs partagent quelques adresses ips publiques."
+
+#: src/Form/ConfigForm.php:156
 msgid "One per line, CIDR accepted."
 msgstr "Une par ligne, CIDR acceptées."
