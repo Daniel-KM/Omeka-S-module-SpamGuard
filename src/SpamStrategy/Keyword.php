@@ -18,6 +18,16 @@ class Keyword extends AbstractSpamStrategy
             return null;
         }
 
+        // Decode the entities and remove the tags before the check. A body
+        // stored as html writes "spécialisée" as "sp&eacute;cialis&eacute;e",
+        // where "cialis" is surrounded by the non word characters of the
+        // entities, so it would match as a whole word. It also defeats the
+        // usual evasions, like "v&#105;agra" or "<b>via</b>gra".
+        $haystack = strip_tags(html_entity_decode($haystack, ENT_QUOTES | ENT_HTML5, 'UTF-8'));
+        if (trim($haystack) === '') {
+            return null;
+        }
+
         $keywords = array_map('trim', array_map('strval', (array) ($settings['keywords'] ?? [])));
         foreach (array_filter($keywords, fn ($v) => $v !== '') as $keyword) {
             if (preg_match('/\b' . preg_quote($keyword, '/') . '\b/ui', $haystack)) {
