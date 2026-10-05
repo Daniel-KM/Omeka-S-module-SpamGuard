@@ -54,6 +54,44 @@ Quick start
 Once enabled, the module is active with default settings for modules that use
 it, like [Contact Us]. Just config the form to set params more precisely.
 
+### Verdict
+
+Each enabled strategy reports a reason. The reasons are weighted: a strong one
+(honeypot, keyword, link to an abused domain, too many urls, banned ip, dnsbl,
+reputation or rate limit of the ip, proof of work, decision of an admin) makes
+the submission a spam on its own, while a weak one (too fast, rate limit of the
+session, mail domain without dns record) is a hint only, so two of them are
+needed. The weak checks depend on timing, on the session or on the dns, so a
+false positive is plausible with one of them alone. The proof of work stays
+strong: it is the only barrier against the bots that do not run javascript.
+
+A calling module may use `SpamResult::isCertain()` to reject a certain spam and
+to keep an uncertain one for moderation.
+
+### Journal and ip
+
+Every check is recorded in the journal `spam_log` with its source module, for
+thirty days. It feeds two strategies:
+
+- the reputation of the ip: an ip that sent a spam detected by a strong check in
+  any module during the last hours is blocked, unless an admin marked a later
+  message of this ip as not spam (ContactUs and Comment report the decisions of
+  the admins);
+- the rate limit by ip: too many submissions from the same ip in a few minutes,
+  in any module and whatever the session, since a bot drops its cookie.
+
+List the networks of the institution in the trusted ips: their visitors share a
+few public ips, that these two strategies would block for everyone.
+
+### Dnsbl
+
+The default zone is `sbl-xbl.spamhaus.org`. Spamhaus "zen" includes the policy
+block list, that lists the consumer access ranges, so it flags many legitimate
+visitors: its answers (127.0.0.10 and 127.0.0.11) are ignored for the Spamhaus
+zones. Spamhaus refuses the queries sent through a public dns resolver (Google,
+Cloudflare…): the check is then inoperative and a warning is logged; use the
+resolver of the provider or a data query service key.
+
 ### Spam keywords
 
 The keywords flagging a message are listed in the configuration form, one per
