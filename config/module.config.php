@@ -29,6 +29,11 @@ return [
             'linkTld' => SpamStrategy\LinkTld::class,
         ],
     ],
+    'view_manager' => [
+        'template_path_stack' => [
+            dirname(__DIR__) . '/view',
+        ],
+    ],
     'form_elements' => [
         'invokables' => [
             Form\ConfigForm::class => Form\ConfigForm::class,

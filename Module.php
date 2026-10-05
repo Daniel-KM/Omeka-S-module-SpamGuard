@@ -26,6 +26,7 @@ if (!defined('COMMON_PSR4_FALLBACK')) {
 }
 
 use Common\TraitModule;
+use Laminas\View\Renderer\PhpRenderer;
 use Omeka\Module\AbstractModule;
 
 /**
@@ -33,7 +34,24 @@ use Omeka\Module\AbstractModule;
  */
 class Module extends AbstractModule
 {
-    use TraitModule;
+    use TraitModule {
+        getConfigForm as traitGetConfigForm;
+    }
 
     const NAMESPACE = __NAMESPACE__;
+
+    /**
+     * Prepend the statistics of the journal to the config form, so the
+     * thresholds are set on figures: which checks catch the spams, and how
+     * many verdicts the admins corrected.
+     */
+    public function getConfigForm(PhpRenderer $renderer)
+    {
+        $services = $this->getServiceLocator();
+        $html = $renderer->partial('spam-guard/module/statistics', [
+            'statistics' => $services->get('SpamGuard\SpamLog')->statistics(),
+            'strongReasons' => SpamResult::STRONG_REASONS,
+        ]);
+        return $html . $this->traitGetConfigForm($renderer);
+    }
 }

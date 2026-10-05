@@ -1,0 +1,70 @@
+<?php
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var array $statistics
+ * @var string[] $strongReasons
+ */
+
+$plugins = $this->getHelperPluginManager();
+$translate = $plugins->get('translate');
+$escape = $plugins->get('escapeHtml');
+
+$total = $statistics['total'];
+$spams = $statistics['spams'];
+$rate = $total ? round(100 * $spams / $total) : 0;
+?>
+
+<h3><?= $translate('Statistics') ?></h3>
+
+<p>
+    <?= $escape(sprintf($translate('During the last %1$d days: %2$d submissions, %3$d detected as spam (%4$d%%).'), $statistics['days'], $total, $spams, $rate)) ?>
+    <?php if ($statistics['notSpamByAdmin'] || $statistics['spamByAdmin']): ?>
+    <?= $escape(sprintf($translate('The admins marked %1$d messages as not spam (false positives) and %2$d as spam (missed).'), $statistics['notSpamByAdmin'], $statistics['spamByAdmin'])) ?>
+    <?php endif; ?>
+</p>
+
+<?php if ($statistics['byReason']): ?>
+<table class="tablesaw" data-tablesaw-mode="stack">
+    <thead>
+        <tr>
+            <th><?= $translate('Reason') ?></th>
+            <th><?= $translate('Spams') ?></th>
+            <th><?= $translate('Weight') ?></th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($statistics['byReason'] as $reason => $count): ?>
+        <tr>
+            <td><?= $escape($reason) ?></td>
+            <td><?= $count ?></td>
+            <td><?= in_array($reason, $strongReasons, true) ? $translate('strong') : $translate('weak (a hint only)') ?></td>
+        </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+<?php endif; ?>
+
+<?php if (count($statistics['bySource']) > 1): ?>
+<table class="tablesaw" data-tablesaw-mode="stack">
+    <thead>
+        <tr>
+            <th><?= $translate('Source') ?></th>
+            <th><?= $translate('Submissions') ?></th>
+            <th><?= $translate('Spams') ?></th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($statistics['bySource'] as $source => $counts): ?>
+        <tr>
+            <td><?= $escape($source) ?></td>
+            <td><?= $counts['total'] ?></td>
+            <td><?= $counts['spams'] ?></td>
+        </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+<?php endif; ?>
+
+<p class="explanation">
+    <?= $escape($translate('A weak reason alone is a hint only: two of them are needed to make a spam. Many false positives on a reason mean that its threshold is too strict; many missed spams mean that a check is disabled or that its list is incomplete.')) ?>
+</p>

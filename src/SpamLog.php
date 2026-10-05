@@ -55,6 +55,56 @@ class SpamLog
     }
 
     /**
+     * Statistics of the journal for the last days: the submissions, the spams,
+     * the decisions of the admins and the spams by reason and by source.
+     *
+     * The reasons are stored as a list, so the aggregation is done here; the
+     * journal is bounded by the retention, so the rows are few.
+     *
+     * @return array{days: int, total: int, spams: int, notSpamByAdmin: int, spamByAdmin: int, byReason: array<string, int>, bySource: array<string, array{total: int, spams: int}>}
+     */
+    public function statistics(int $days = self::RETENTION_DAYS): array
+    {
+        $stats = [
+            'days' => $days,
+            'total' => 0,
+            'spams' => 0,
+            'notSpamByAdmin' => 0,
+            'spamByAdmin' => 0,
+            'byReason' => [],
+            'bySource' => [],
+        ];
+        $since = date('Y-m-d H:i:s', strtotime('-' . max(1, $days) . ' days'));
+        $rows = $this->connection->executeQuery(
+            'SELECT `source`, `reasons`, `is_spam` FROM `spam_log` WHERE `created` >= :since',
+            ['since' => $since]
+        )->iterateAssociative();
+        foreach ($rows as $row) {
+            $reasons = array_filter(explode(',', (string) $row['reasons']));
+            $isAdmin = in_array('admin', $reasons, true);
+            if ($isAdmin) {
+                $row['is_spam'] ? ++$stats['spamByAdmin'] : ++$stats['notSpamByAdmin'];
+                continue;
+            }
+            ++$stats['total'];
+            $source = (string) $row['source'];
+            $stats['bySource'][$source] ??= ['total' => 0, 'spams' => 0];
+            ++$stats['bySource'][$source]['total'];
+            if (!$row['is_spam']) {
+                continue;
+            }
+            ++$stats['spams'];
+            ++$stats['bySource'][$source]['spams'];
+            foreach ($reasons as $reason) {
+                $stats['byReason'][$reason] = ($stats['byReason'][$reason] ?? 0) + 1;
+            }
+        }
+        arsort($stats['byReason']);
+        ksort($stats['bySource']);
+        return $stats;
+    }
+
+    /**
      * Number of submissions of the ip during the last minutes, spam or not.
      */
     public function countRecent(string $ip, int $minutes): int
