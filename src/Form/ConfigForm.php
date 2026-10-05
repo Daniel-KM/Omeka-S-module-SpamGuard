@@ -85,6 +85,18 @@ class ConfigForm extends Form
                 ],
             ])
             ->add([
+                'name' => 'spamguard_keywords',
+                'type' => OmekaElement\ArrayTextarea::class,
+                'options' => [
+                    'label' => 'Spam keywords', // @translate
+                    'info' => 'One per line. A message whose subject or body contains one of them, as a whole word, is a spam. This list replaces the one of the module Common, that is no longer read. Check that a keyword is not a legitimate word of your collections before adding it.', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'spamguard_keywords',
+                    'rows' => 10,
+                ],
+            ])
+            ->add([
                 'name' => 'spamguard_dnsbl_zones',
                 'type' => OmekaElement\ArrayTextarea::class,
                 'options' => [

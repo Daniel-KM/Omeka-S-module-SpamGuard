@@ -3,49 +3,27 @@
 namespace SpamGuard\SpamStrategy;
 
 use SpamGuard\SpamContext;
-use ReflectionClass;
 
 class Keyword extends AbstractSpamStrategy
 {
-    private static ?array $cache = null;
-
+    /**
+     * The keywords are managed in the configuration form of the module, so an
+     * installation can adapt the list to its own collections: a legitimate term
+     * of the domain would flag every message mentioning it.
+     */
     public function check(SpamContext $context, array $settings): ?array
     {
         $haystack = trim(((string) $context->subject) . "\n" . ((string) $context->body));
         if ($haystack === '') {
             return null;
         }
-        foreach ($this->keywords() as $kw) {
-            if (preg_match('/\b' . preg_quote($kw, '/') . '\b/ui', $haystack)) {
-                return $this->match('keyword', $kw);
+
+        $keywords = array_map('trim', array_map('strval', (array) ($settings['keywords'] ?? [])));
+        foreach (array_filter($keywords, fn ($v) => $v !== '') as $keyword) {
+            if (preg_match('/\b' . preg_quote($keyword, '/') . '\b/ui', $haystack)) {
+                return $this->match('keyword', $keyword);
             }
         }
         return null;
-    }
-
-    private function keywords(): array
-    {
-        if (self::$cache !== null) {
-            return self::$cache;
-        }
-
-        $keywords = [];
-
-        $local = dirname(__DIR__, 2) . '/data/params/spam_keywords.php';
-        if (is_file($local)) {
-            $keywords = array_merge($keywords, (array) include $local);
-        }
-
-        if (class_exists(\Common\Module::class, false)) {
-            $ref = new ReflectionClass(\Common\Module::class);
-            $commonFile = dirname((string) $ref->getFileName()) . '/data/mailer/spam_keywords.php';
-            if (is_file($commonFile)) {
-                $keywords = array_merge($keywords, (array) include $commonFile);
-            }
-        }
-
-        $keywords = array_filter(array_map('strval', $keywords), fn ($v) => $v !== '');
-        self::$cache = array_values(array_unique($keywords));
-        return self::$cache;
     }
 }

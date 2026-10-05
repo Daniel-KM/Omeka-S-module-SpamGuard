@@ -21,6 +21,7 @@ class SpamCheckerFactory implements FactoryInterface
             'powChallenge' => ['difficulty' => (int) ($settings->get('spamguard_pow_difficulty') ?? 4)],
             'rateLimit' => ['minInterval' => (int) ($settings->get('spamguard_rate_limit_seconds') ?? 10)],
             'dnsbl' => ['zones' => (array) ($settings->get('spamguard_dnsbl_zones') ?? [])],
+            'keyword' => ['keywords' => (array) ($settings->get('spamguard_keywords') ?? [])],
         ];
         return new SpamChecker(
             $services->get('SpamGuard\SpamStrategyManager'),
