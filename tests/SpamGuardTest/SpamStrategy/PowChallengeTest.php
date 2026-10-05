@@ -71,4 +71,16 @@ class PowChallengeTest extends TestCase
         $this->assertSame('powChallenge', $r['reason']);
         $this->assertSame('invalid', $r['detail']);
     }
+
+    /**
+     * When the calling module skips the challenge, it issues no salt, so a
+     * missing nonce is not a spam.
+     */
+    public function testCallerCanSkipTheChallenge(): void
+    {
+        $s = new PowChallenge();
+        $this->assertNull($s->check(new SpamContext(extra: ['powSkip' => true]), ['difficulty' => 2]));
+        $r = $s->check(new SpamContext(extra: ['powSkip' => false]), ['difficulty' => 2]);
+        $this->assertSame('missing', $r['detail']);
+    }
 }

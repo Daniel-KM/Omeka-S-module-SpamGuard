@@ -31,7 +31,10 @@ class SpamCheckerTest extends TestCase
 
     public function testCollectsAllReasonsWhenMultipleStrategiesFail(): void
     {
-        $c = new SpamChecker($this->manager(), ['honeypot', 'keyword'], []);
+        // The keywords come from the settings of the module, passed by strategy.
+        $c = new SpamChecker($this->manager(), ['honeypot', 'keyword'], [
+            'keyword' => ['keywords' => ['crypto-pump']],
+        ]);
         $r = $c->check(new SpamContext(
             body: 'crypto-pump offer',
             honeypotValue: 'bot',

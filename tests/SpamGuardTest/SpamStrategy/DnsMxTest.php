@@ -28,4 +28,14 @@ class DnsMxTest extends TestCase
         $s = new DnsMx(fn ($domain) => true);
         $this->assertNull($s->check(new SpamContext(email: 'user@ok.example'), []));
     }
+
+    /**
+     * The calling module may disable the check with its own option.
+     */
+    public function testCallerCanDisableTheCheck(): void
+    {
+        $s = new DnsMx(fn ($domain) => false);
+        $this->assertNull($s->check(new SpamContext(email: 'user@nomx.example', extra: ['checkDnsMx' => false]), []));
+        $this->assertIsArray($s->check(new SpamContext(email: 'user@nomx.example', extra: ['checkDnsMx' => true]), []));
+    }
 }

@@ -14,6 +14,11 @@
             <file>tests/SpamGuardTest/SpamResultTest.php</file>
             <file>tests/SpamGuardTest/SpamCheckerTest.php</file>
             <directory suffix="Test.php">tests/SpamGuardTest/SpamStrategy</directory>
+            <directory suffix="Test.php">tests/SpamGuardTest/Stdlib</directory>
+        </testsuite>
+        <!-- Integration tests, with the database -->
+        <testsuite name="integration">
+            <file>tests/SpamGuardTest/SpamLogTest.php</file>
         </testsuite>
     </testsuites>
     <php>

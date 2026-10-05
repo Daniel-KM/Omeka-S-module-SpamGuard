@@ -51,4 +51,29 @@ class DnsblTest extends TestCase
         $this->assertNull($s->check(new SpamContext(ip: '2001:db8::1'), ['zones' => ['zen.spamhaus.org']]));
         $this->assertFalse($called);
     }
+
+    /**
+     * @dataProvider answerProvider
+     */
+    public function testAnswerOfTheList(array $answers, bool $listed): void
+    {
+        $s = new Dnsbl(fn ($q) => $answers);
+        $r = $s->check(new SpamContext(ip: '1.2.3.4'), ['zones' => ['zen.spamhaus.org']]);
+        $listed ? $this->assertIsArray($r) : $this->assertNull($r);
+    }
+
+    public function answerProvider(): array
+    {
+        return [
+            'listed sbl' => [['127.0.0.2'], true],
+            'listed xbl' => [['127.0.0.4'], true],
+            'listed among others' => [['127.255.255.254', '127.0.0.10'], true],
+            'not listed' => [[], false],
+            'public resolver refused' => [['127.255.255.254'], false],
+            'quota exceeded' => [['127.255.255.255'], false],
+            'typo in query' => [['127.255.255.252'], false],
+            'loopback' => [['127.0.0.1'], false],
+            'unrelated address' => [['8.8.8.8'], false],
+        ];
+    }
 }
