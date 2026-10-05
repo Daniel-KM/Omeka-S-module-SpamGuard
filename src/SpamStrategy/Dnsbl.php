@@ -6,6 +6,14 @@ use SpamGuard\SpamContext;
 
 class Dnsbl extends AbstractSpamStrategy
 {
+    /**
+     * Last byte of the answers of the Spamhaus policy block list (PBL).
+     *
+     * The codes are specific to Spamhaus: other lists use them for other
+     * meanings, so they are ignored for the Spamhaus zones only.
+     */
+    const POLICY_CODES = [10, 11];
+
     /** @var callable */
     private $resolver;
 
@@ -36,7 +44,7 @@ class Dnsbl extends AbstractSpamStrategy
             if ($zone === '') {
                 continue;
             }
-            if ($this->isListed(($this->resolver)($reverse . '.' . $zone))) {
+            if ($this->isListed(($this->resolver)($reverse . '.' . $zone), $zone)) {
                 return $this->match('dnsbl', ['zone' => $zone]);
             }
         }
@@ -53,10 +61,16 @@ class Dnsbl extends AbstractSpamStrategy
      * every message as spam. A resolver returning a boolean is kept for
      * compatibility.
      *
+     * For a Spamhaus zone, the codes 127.0.0.10 and 127.0.0.11 are the policy
+     * block list (PBL), included in "zen": it lists the dynamic ranges of
+     * consumer access providers, that should not send mail directly, but it is
+     * not a sign of spam for a visitor of a site, so it is ignored.
+     *
      * @param array|bool $answers
      */
-    private function isListed($answers): bool
+    private function isListed($answers, string $zone = ''): bool
     {
+        $ignored = preg_match('~(^|\.)spamhaus\.(org|net)$~i', $zone) ? self::POLICY_CODES : [];
         if (is_bool($answers)) {
             return $answers;
         }
@@ -64,6 +78,7 @@ class Dnsbl extends AbstractSpamStrategy
             if (preg_match('~^127\.0\.0\.(\d{1,3})$~', (string) $answer, $m)
                 && (int) $m[1] >= 2
                 && (int) $m[1] <= 255
+                && !in_array((int) $m[1], $ignored, true)
             ) {
                 return true;
             }

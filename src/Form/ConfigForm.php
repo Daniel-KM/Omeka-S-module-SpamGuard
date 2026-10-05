@@ -115,7 +115,7 @@ class ConfigForm extends Form
                 'type' => OmekaElement\ArrayTextarea::class,
                 'options' => [
                     'label' => 'DNSBL zones', // @translate
-                    'info' => 'One per line, like zen.spamhaus.org.', // @translate
+                    'info' => 'One per line, like sbl-xbl.spamhaus.org. For the zones of Spamhaus, the answers of the policy block list (consumer access ranges, included in zen.spamhaus.org) are ignored.', // @translate
                 ],
                 'attributes' => [
                     'id' => 'spamguard_dnsbl_zones',
