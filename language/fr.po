@@ -1,16 +1,60 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
-"POT-Creation-Date: \n"
-"PO-Revision-Date: \n"
-"Last-Translator: Daniel Berthereau <Daniel.fr@Berthereau.net>\n"
-"Language-Team: \n"
-"Language: fr\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: fr\n"
+"Language-Team: \n"
+"Last-Translator: Daniel Berthereau <Daniel.fr@Berthereau.net>\n"
+"MIME-Version: 1.0\n"
+"PO-Revision-Date: \n"
+"POT-Creation-Date: 2026-10-05 00:00+0000\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
 "X-Generator: Poedit 3.6\n"
+
+#: view/spam-guard/module/statistics.phtml:17
+msgid "Statistics"
+msgstr "Statistiques"
+
+#: view/spam-guard/module/statistics.phtml:20
+#, php-format
+msgid "During the last %1$d days: %2$d submissions, %3$d detected as spam (%4$d%%)."
+msgstr "Au cours des %1$d derniers jours : %2$d soumissions, %3$d détectées comme spam (%4$d%%)."
+
+#: view/spam-guard/module/statistics.phtml:22
+#, php-format
+msgid "The admins marked %1$d messages as not spam (false positives) and %2$d as spam (missed)."
+msgstr "Les administrateurs ont classé %1$d messages comme non-spam (faux positifs) et %2$d comme spam (faux négatifs)."
+
+#: view/spam-guard/module/statistics.phtml:30
+msgid "Reason"
+msgstr "Raison"
+
+#: view/spam-guard/module/statistics.phtml:31
+#: view/spam-guard/module/statistics.phtml:53
+msgid "Spams"
+msgstr "Spams"
+
+#: view/spam-guard/module/statistics.phtml:32
+msgid "Weight"
+msgstr "Poids"
+
+#: view/spam-guard/module/statistics.phtml:40
+msgid "strong"
+msgstr "fort"
+
+#: view/spam-guard/module/statistics.phtml:40
+msgid "weak (a hint only)"
+msgstr "faible (indication simple)"
+
+#: view/spam-guard/module/statistics.phtml:52
+msgid "Submissions"
+msgstr "Soumissions"
+
+#: view/spam-guard/module/statistics.phtml:69
+msgid "A weak reason alone is a hint only: two of them are needed to make a spam. Many false positives on a reason mean that its threshold is too strict; many missed spams mean that a check is disabled or that its list is incomplete."
+msgstr "Un motif faible ne constitue qu'un indice : il en faut deux pour qu'un message soit considéré comme spam. Un nombre élevé de faux positifs pour un motif donné indique que son seuil est trop strict ; un nombre élevé de spams non détectés signifie qu'un contrôle est désactivé ou que sa liste est incomplète."
 
 #: data/scripts/upgrade.php:50
 msgid "The spam keywords are now editable in the configuration form of the module. {count} keywords were imported from the files of the modules SpamGuard and Common, that are no longer read."
@@ -23,6 +67,18 @@ msgstr "Une nouvelle stratégie marque spam les messages contenant un lien vers 
 #: data/scripts/upgrade.php:76
 msgid "A new strategy, disabled by default, marks as spam a message sent from an ip that sent a spam detected by a reliable check in any module during the last hours. Before enabling it, add the networks of your institution to the trusted ips in the config form, since its visitors may share a few public ips."
 msgstr "Une nouvelle stratégie, désactivée par défaut, marque spam tout message provenant d'une adresse ip ayant envoyé un spam détecté par un contrôle fiable par un module au cours des dernières heures. Avant de l'activer, ajoutez les réseaux de votre établissement à la liste des adresses ip de confiance dans le formulaire de configuration, car ses visiteurs peuvent partager certaines adresses ip publiques."
+
+#: data/scripts/upgrade.php:93
+msgid "The dnsbl zone \"zen.spamhaus.org\" was replaced by \"sbl-xbl.spamhaus.org\": \"zen\" includes the policy block list, that lists the consumer access ranges and flags legitimate visitors. Its answers are ignored anyway."
+msgstr "La zone DNSBL « zen.spamhaus.org » a été remplacée par « sbl-xbl.spamhaus.org » : « zen » contient la liste de blocage de politique, qui répertorie les plages d'adresses des utilisateurs et signale les visiteurs légitimes. Ses réponses sont de toute façon ignorées."
+
+#: data/scripts/upgrade.php:109
+msgid "A new strategy marks as spam the submissions of an ip beyond a number in a few minutes, in any module and whatever the session. The thresholds are in the config form, where the networks of the institution can be listed as trusted ips."
+msgstr "Une nouvelle stratégie marque comme spam les soumissions provenant d'une adresse ip dépassant un certain nombre en quelques minutes, quel que soit le module et la session. Les seuils sont définis dans la configuration, où les réseaux de l'établissement peuvent être ajoutés comme adresses ip de confiance."
+
+#: src/SpamStrategy/Dnsbl.php:64
+msgid "SpamGuard: the dnsbl zone {zone} refuses the queries sent through a public dns resolver, so the check is inoperative. Use the resolver of the provider or a Spamhaus data query service key."
+msgstr "SpamGuard : la zone dnsbl {zone} rejette les requêtes envoyées via un résolveur dns public ; la vérification est donc inopérante. Utilisez le résolveur de votre fournisseur d'accès ou une clé du service de requête de données Spamhaus."
 
 #: src/Form/ConfigForm.php:18
 msgid "Enabled spam strategies"
@@ -64,86 +120,106 @@ msgstr "Vérification de l’adresse IP du client par rapport à une liste noire
 msgid "Links to abused top level domains"
 msgstr "Liens vers des extensions poubelle"
 
-#: src/Form/ConfigForm.php:29 src/Form/ConfigForm.php:155
+#: src/Form/ConfigForm.php:29
+#: src/Form/ConfigForm.php:181
 msgid "Banned IPs"
 msgstr "Adresses IP bloquées"
 
 #: src/Form/ConfigForm.php:30
+msgid "Too many submissions from the same ip in any module (see the trusted ips below)"
+msgstr "Trop de soumissions depuis la même ip via les modules (voir les adresses ip de confiance ci-dessous)"
+
+#: src/Form/ConfigForm.php:31
 msgid "Reputation of the ip (recent spams of any module, see the trusted ips below)"
 msgstr "Réputation de l'adresse ip (spams récents des modules ; voir les adresses ip de confiance ci-dessous)"
 
-#: src/Form/ConfigForm.php:41
+#: src/Form/ConfigForm.php:42
 msgid "Minimum submission delay (seconds)"
 msgstr "Délai minimal de soumission (en secondes)"
 
-#: src/Form/ConfigForm.php:42
+#: src/Form/ConfigForm.php:43
 msgid "Minimum delay between form load and submission."
 msgstr "Délai minimum entre le chargement du formulaire et son envoi."
 
-#: src/Form/ConfigForm.php:54
+#: src/Form/ConfigForm.php:55
 msgid "Maximum URL count"
 msgstr "Nombre maximal d’URL"
 
-#: src/Form/ConfigForm.php:55
+#: src/Form/ConfigForm.php:56
 msgid "Above this threshold, the submission is considered spam."
 msgstr "Au-delà de ce seuil, la soumission est considérée comme du spam."
 
-#: src/Form/ConfigForm.php:67
+#: src/Form/ConfigForm.php:68
 msgid "Rate-limit interval (seconds)"
 msgstr "Intervalle de limitation de débit (en secondes)"
 
-#: src/Form/ConfigForm.php:68
+#: src/Form/ConfigForm.php:69
 msgid "Minimum delay between two submissions from the same IP or session."
 msgstr "Délai minimum entre deux soumissions provenant de la même adresse IP ou de la même session."
 
-#: src/Form/ConfigForm.php:80
+#: src/Form/ConfigForm.php:81
 msgid "Proof-of-Work difficulty (number of leading hex zeros)"
 msgstr "Difficulté de la preuve de travail (nombre de zéros hexadécimaux en tête)"
 
-#: src/Form/ConfigForm.php:81
+#: src/Form/ConfigForm.php:82
 msgid "Number of leading hex zeros required on the hash (sha256). The higher the value, the more expensive the client-side computation."
 msgstr "Nombre de zéros hexadécimaux requis au début du hachage (sha256). Plus cette valeur est élevée, plus le calcul côté client est coûteux."
 
-#: src/Form/ConfigForm.php:93
+#: src/Form/ConfigForm.php:94
 msgid "Spam keywords"
 msgstr "Mots-clés de spam"
 
-#: src/Form/ConfigForm.php:94
+#: src/Form/ConfigForm.php:95
 msgid "One per line. A message whose subject or body contains one of them, as a whole word, is a spam. This list replaces the one of the module Common, that is no longer read. Check that a keyword is not a legitimate word of your collections before adding it."
 msgstr "Un par ligne. Tout message dont l'objet ou le corps contient l'un de ces mots, en entier, est considéré comme spam. Cette liste remplace celle du module « Common », qui n'est plus prise en compte. Vérifiez qu'un mot-clé ne figure pas parmi les mots légitimes de vos collections avant de l'ajouter."
 
-#: src/Form/ConfigForm.php:105
+#: src/Form/ConfigForm.php:106
 msgid "Abused top level domains"
 msgstr "Extensions connues pour les abus"
 
-#: src/Form/ConfigForm.php:106
+#: src/Form/ConfigForm.php:107
 msgid "One per line, without dot. A message containing a link to a domain ending with one of them is a spam. The bots rotate their domains every few hours, but stay on a few cheap top level domains."
 msgstr "Un par ligne, sans point. Tout message contenant un lien vers l'un de ces domaines est considéré comme spam. Les bots changent de domaine toutes les quelques heures, mais restent sur des domaines poubelle."
 
-#: src/Form/ConfigForm.php:117
+#: src/Form/ConfigForm.php:118
 msgid "DNSBL zones"
 msgstr "Zones DNSBL"
 
-#: src/Form/ConfigForm.php:118
-msgid "One per line, like zen.spamhaus.org."
-msgstr "Une par ligne, comme zen.spamhaus.org."
+#: src/Form/ConfigForm.php:119
+msgid "One per line, like sbl-xbl.spamhaus.org. For the zones of Spamhaus, the answers of the policy block list (consumer access ranges, included in zen.spamhaus.org) are ignored."
+msgstr "Une par ligne, comme sbl-xbl.spamhaus.org. Pour les zones de Spamhaus, les réponses de la liste de blocage de politique (plages d'accès des particuliers, incluses dans zen.spamhaus.org) sont ignorées."
 
-#: src/Form/ConfigForm.php:129
+#: src/Form/ConfigForm.php:130
+msgid "Maximum number of submissions from the same ip"
+msgstr "Nombre maximum de soumissions depuis la même ip"
+
+#: src/Form/ConfigForm.php:131
+msgid "Counted in the journal for all the modules, whatever the session, during the number of minutes below. Keep it high: the visitors of an institution may share a few public ips."
+msgstr "Pris en compte dans le journal pour tous les modules, quelle que soit la session, pendant le nombre de minutes indiqué ci-dessous. Prévoyez une valeur élevée : les visiteurs d'un établissement peuvent partager des adresses ip publiques."
+
+#: src/Form/ConfigForm.php:143
+msgid "Minutes during which the submissions of an ip are counted"
+msgstr "Minutes pendant lesquelles les soumissions d'une ip sont comptées"
+
+#: src/Form/ConfigForm.php:155
 msgid "Hours during which an ip that sent a spam is blocked"
 msgstr "Durée pendant laquelle une adresse ip ayant envoyé un spam est bloquée"
 
-#: src/Form/ConfigForm.php:130
+#: src/Form/ConfigForm.php:156
 msgid "A message sent from an ip that sent a spam in any module during this number of hours is a spam too. Only the spams detected by reliable checks count (honeypot, keyword, link, dnsbl, banned ip, admin), not the ones based on timing. Keep it short: many visitors may share the same ip."
 msgstr "Un message envoyé depuis une adresse ip ayant déjà envoyé un spam dans n'importe quel module au cours de cette période est également considéré comme du spam. Seuls les spams détectés par des contrôles fiables sont pris en compte (honeypot, mot-clé, lien, DNSBL, adresse ip bannie, administrateur), et non ceux basés sur la durée. Le message doit être court : de nombreux visiteurs peuvent partager la même adresse ip."
 
-#: src/Form/ConfigForm.php:142
+#: src/Form/ConfigForm.php:168
 msgid "Trusted ips, never blocked by the reputation"
 msgstr "Adresses ip de confiance, non bloquées via la réputation"
 
-#: src/Form/ConfigForm.php:143
+#: src/Form/ConfigForm.php:169
 msgid "One ip or range (cidr) by line, for example the networks of the institution, whose visitors share a few public ips."
 msgstr "Une adresse ip ou une plage (cidr) par ligne, par exemple les réseaux de l'établissement, dont les visiteurs partagent quelques adresses ips publiques."
 
-#: src/Form/ConfigForm.php:156
+#: src/Form/ConfigForm.php:182
 msgid "One per line, CIDR accepted."
 msgstr "Une par ligne, CIDR acceptées."
+
+#~ msgid "One per line, like zen.spamhaus.org."
+#~ msgstr "Une par ligne, comme zen.spamhaus.org."
