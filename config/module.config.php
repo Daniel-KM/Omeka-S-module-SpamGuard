@@ -12,6 +12,9 @@ return [
         ],
     ],
     'spam_guard_strategies' => [
+        'factories' => [
+            'ipReputation' => Service\IpReputationFactory::class,
+        ],
         'invokables' => [
             'honeypot' => SpamStrategy\Honeypot::class,
             'urlCount' => SpamStrategy\UrlCount::class,
@@ -108,6 +111,8 @@ return [
                 'zen.spamhaus.org',
             ],
             'spamguard_banned_ips' => [],
+            'spamguard_ip_reputation_hours' => 24,
+            'spamguard_ip_trusted' => [],
         ],
     ],
 ];

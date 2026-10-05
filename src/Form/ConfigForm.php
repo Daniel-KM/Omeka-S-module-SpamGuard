@@ -26,6 +26,7 @@ class ConfigForm extends Form
                         'dnsMx' => 'Email DNS MX check', // @translate
                         'dnsbl' => 'Client IP DNSBL check', // @translate
                         'bannedIp' => 'Banned IPs', // @translate
+                        'ipReputation' => 'Reputation of the ip (recent spams of any module, see the trusted ips below)', // @translate
                     ],
                 ],
                 'attributes' => [
@@ -106,6 +107,32 @@ class ConfigForm extends Form
                 'attributes' => [
                     'id' => 'spamguard_dnsbl_zones',
                     'rows' => 5,
+                ],
+            ])
+            ->add([
+                'name' => 'spamguard_ip_reputation_hours',
+                'type' => CommonElement\OptionalNumber::class,
+                'options' => [
+                    'label' => 'Hours during which an ip that sent a spam is blocked', // @translate
+                    'info' => 'A message sent from an ip that sent a spam in any module during this number of hours is a spam too. Only the spams detected by reliable checks count (honeypot, keyword, link, dnsbl, banned ip, admin), not the ones based on timing. Keep it short: many visitors may share the same ip.', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'spamguard_ip_reputation_hours',
+                    'min' => 0,
+                    'step' => 1,
+                ],
+            ])
+            ->add([
+                'name' => 'spamguard_ip_trusted',
+                'type' => OmekaElement\ArrayTextarea::class,
+                'options' => [
+                    'label' => 'Trusted ips, never blocked by the reputation', // @translate
+                    'info' => 'One ip or range (cidr) by line, for example the networks of the institution, whose visitors share a few public ips.', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'spamguard_ip_trusted',
+                    'rows' => 4,
+                    'placeholder' => '192.0.2.0/24',
                 ],
             ])
             ->add([

@@ -22,6 +22,10 @@ class SpamCheckerFactory implements FactoryInterface
             'rateLimit' => ['minInterval' => (int) ($settings->get('spamguard_rate_limit_seconds') ?? 10)],
             'dnsbl' => ['zones' => (array) ($settings->get('spamguard_dnsbl_zones') ?? [])],
             'keyword' => ['keywords' => (array) ($settings->get('spamguard_keywords') ?? [])],
+            'ipReputation' => [
+                'hours' => (int) ($settings->get('spamguard_ip_reputation_hours') ?? 24),
+                'trusted' => (array) ($settings->get('spamguard_ip_trusted') ?? []),
+            ],
         ];
         return new SpamChecker(
             $services->get('SpamGuard\SpamStrategyManager'),
