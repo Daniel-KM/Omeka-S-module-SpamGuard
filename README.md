@@ -54,9 +54,29 @@ Quick start
 Once enabled, the module is active with default settings for modules that use
 it, like [Contact Us]. Just config the form to set params more precisely.
 
+### Spam keywords
+
+The keywords flagging a message are listed in the configuration form, one per
+line. A message whose subject or body contains one of them, as a whole word, is
+a spam. The body is decoded and stripped from its tags first, so a keyword
+hidden in an entity or split by a tag is still found, and a legitimate word
+written as `sp&eacute;cialis&eacute;e` is not a false positive.
+
+This list replaces the one maintained in the module Common (`Common/data/mailer/spam_keywords.php`),
+that is no longer read. It is seeded from it on install, and on upgrade from a
+version older than 3.4.1, along with the keywords that were stored in `data/params/spam_keywords.php`.
+The list then belongs to the installation: a keyword added upstream is not
+propagated, and a keyword removed here stays removed.
+
+Check a keyword against your own collections before adding it: the check is done
+on word boundaries, but a term may be perfectly legitimate in a catalogue, and
+it would then flag every message mentioning it.
 
 TODO
 ----
+
+- [ ] Add a generator of unique questions/answer.
+- [ ] Add option to disable some strategy when user is connected.
 
 
 Warning
@@ -120,7 +140,7 @@ The idea of this modules comes from a [thread in omeka forum].
 [Contribute]: https://gitlab.com/Daniel-KM/Omeka-S-module-Contribute
 [SpamGuard.zip]: https://gitlab.com/Daniel-KM/Omeka-S-module-SpamGuard/-/releases
 [installing a module]: https://omeka.org/s/docs/user-manual/modules/#installing-modules
-[module issues]: https://gitlab.com/Daniel-KM/Omeka-S-module-SpamGuard/-/issues
+[module issues]: https://gitlab.com/Daniel-KM/Omeka-S-module-SpamGuard/-/work_items
 [CeCILL v2.1]: https://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html
 [GNU/GPL]: https://www.gnu.org/licenses/gpl-3.0.html
 [FSF]: https://www.fsf.org
