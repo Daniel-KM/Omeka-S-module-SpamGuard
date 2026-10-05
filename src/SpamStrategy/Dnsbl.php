@@ -17,8 +17,14 @@ class Dnsbl extends AbstractSpamStrategy
     /** @var callable */
     private $resolver;
 
-    public function __construct(?callable $resolver = null)
+    /** @var \Laminas\Log\LoggerInterface|null */
+    private $logger;
+
+    private bool $refusalLogged = false;
+
+    public function __construct(?callable $resolver = null, ?\Laminas\Log\LoggerInterface $logger = null)
     {
+        $this->logger = $logger;
         $this->resolver = $resolver ?? static fn (string $query): array => array_column(
             (array) (@dns_get_record($query, DNS_A) ?: []),
             'ip'
@@ -44,8 +50,21 @@ class Dnsbl extends AbstractSpamStrategy
             if ($zone === '') {
                 continue;
             }
-            if ($this->isListed(($this->resolver)($reverse . '.' . $zone), $zone)) {
+            $answers = ($this->resolver)($reverse . '.' . $zone);
+            if ($this->isListed($answers, $zone)) {
                 return $this->match('dnsbl', ['zone' => $zone]);
+            }
+            // Spamhaus refuses the queries sent through a public resolver
+            // (Google, Cloudflare…): the check is then silently inoperative, so
+            // warn once per request.
+            if (is_array($answers) && in_array('127.255.255.254', $answers, true) && !$this->refusalLogged) {
+                $this->refusalLogged = true;
+                if ($this->logger) {
+                    $this->logger->warn(
+                        'SpamGuard: the dnsbl zone {zone} refuses the queries sent through a public dns resolver, so the check is inoperative. Use the resolver of the provider or a Spamhaus data query service key.', // @translate
+                        ['zone' => $zone]
+                    );
+                }
             }
         }
         return null;
@@ -86,11 +105,18 @@ class Dnsbl extends AbstractSpamStrategy
         return false;
     }
 
+    /**
+     * Reverse the ip for a dnsbl query: the bytes for ipv4, the nibbles for
+     * ipv6.
+     */
     private function reverseIp(string $ip): ?string
     {
-        if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
-            return null;
+        if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+            return implode('.', array_reverse(explode('.', $ip)));
         }
-        return implode('.', array_reverse(explode('.', $ip)));
+        if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+            return implode('.', array_reverse(str_split(bin2hex((string) inet_pton($ip)))));
+        }
+        return null;
     }
 }

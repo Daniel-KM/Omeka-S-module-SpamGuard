@@ -13,6 +13,7 @@ return [
     ],
     'spam_guard_strategies' => [
         'factories' => [
+            'dnsbl' => Service\DnsblFactory::class,
             'ipReputation' => Service\IpReputationFactory::class,
         ],
         'invokables' => [
@@ -23,7 +24,6 @@ return [
             'rateLimit' => SpamStrategy\RateLimit::class,
             'powChallenge' => SpamStrategy\PowChallenge::class,
             'dnsMx' => SpamStrategy\DnsMx::class,
-            'dnsbl' => SpamStrategy\Dnsbl::class,
             'bannedIp' => SpamStrategy\BannedIp::class,
             'linkTld' => SpamStrategy\LinkTld::class,
         ],
