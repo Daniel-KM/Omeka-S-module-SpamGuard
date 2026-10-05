@@ -77,3 +77,36 @@ if (version_compare((string) $oldVersion, '3.4.1', '<')) {
     );
     $messenger->addSuccess($message);
 }
+
+if (version_compare((string) $oldVersion, '3.4.2', '<')) {
+    // The default list "zen" includes the policy block list of Spamhaus, that
+    // lists the consumer access ranges, so it flags many legitimate visitors.
+    // Replace it by "sbl-xbl" (spam sources and compromised hosts only), and
+    // keep the other zones added manually.
+    $zones = (array) ($settings->get('spamguard_dnsbl_zones') ?: []);
+    $index = array_search('zen.spamhaus.org', array_map('trim', array_map('strval', $zones)), true);
+    if ($index !== false) {
+        $zones[$index] = 'sbl-xbl.spamhaus.org';
+        $zones = array_values(array_unique($zones));
+        $settings->set('spamguard_dnsbl_zones', $zones);
+        $message = new PsrMessage(
+            'The dnsbl zone "zen.spamhaus.org" was replaced by "sbl-xbl.spamhaus.org": "zen" includes the policy block list, that lists the consumer access ranges and flags legitimate visitors. Its answers are ignored anyway.' // @translate
+        );
+        $messenger->addWarning($message);
+        $logger->notice($message->getMessage());
+    }
+
+    // New strategy: too many submissions from the same ip, counted in the
+    // journal whatever the session, since a bot drops its cookie.
+    $settings->set('spamguard_ip_rate_limit_count', 10);
+    $settings->set('spamguard_ip_rate_limit_minutes', 10);
+    $enabled = (array) ($settings->get('spamguard_enabled_strategies') ?: []);
+    if ($enabled && !in_array('ipRateLimit', $enabled, true)) {
+        $enabled[] = 'ipRateLimit';
+        $settings->set('spamguard_enabled_strategies', $enabled);
+    }
+    $message = new PsrMessage(
+        'A new strategy marks as spam the submissions of an ip beyond a number in a few minutes, in any module and whatever the session. The thresholds are in the config form, where the networks of the institution can be listed as trusted ips.' // @translate
+    );
+    $messenger->addSuccess($message);
+}
