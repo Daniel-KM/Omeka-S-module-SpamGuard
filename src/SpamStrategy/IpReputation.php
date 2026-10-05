@@ -19,10 +19,9 @@ use SpamGuard\Stdlib\IpRange;
 class IpReputation extends AbstractSpamStrategy
 {
     /**
-     * Reasons of a spam reliable enough to block the ip that sent it. The
-     * checks based on timing or on the session produce false positives, and
-     * the reputation itself is excluded, otherwise a visitor who retries after
-     * a false positive would extend his own block forever.
+     * Reasons of a spam reliable enough to block the ip that sent it: the
+     * strong ones, without the reputation itself, otherwise a visitor who
+     * retries after a false positive would extend his own block forever.
      */
     const RELIABLE_REASONS = [
         'admin',
