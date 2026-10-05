@@ -14,6 +14,7 @@ return [
     'spam_guard_strategies' => [
         'factories' => [
             'dnsbl' => Service\DnsblFactory::class,
+            'ipRateLimit' => Service\IpRateLimitFactory::class,
             'ipReputation' => Service\IpReputationFactory::class,
         ],
         'invokables' => [
@@ -56,6 +57,7 @@ return [
                 'dnsbl',
                 'bannedIp',
                 'linkTld',
+                'ipRateLimit',
             ],
             'spamguard_min_delay' => 2,
             'spamguard_max_urls' => 3,
@@ -130,6 +132,8 @@ return [
             ],
             'spamguard_banned_ips' => [],
             'spamguard_ip_reputation_hours' => 24,
+            'spamguard_ip_rate_limit_count' => 10,
+            'spamguard_ip_rate_limit_minutes' => 10,
             'spamguard_ip_trusted' => [],
         ],
     ],

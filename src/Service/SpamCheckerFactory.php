@@ -23,6 +23,11 @@ class SpamCheckerFactory implements FactoryInterface
             'dnsbl' => ['zones' => (array) ($settings->get('spamguard_dnsbl_zones') ?? [])],
             'linkTld' => ['tlds' => (array) ($settings->get('spamguard_link_tlds') ?? [])],
             'bannedIp' => ['bannedIps' => (array) ($settings->get('spamguard_banned_ips') ?? [])],
+            'ipRateLimit' => [
+                'maxCount' => (int) ($settings->get('spamguard_ip_rate_limit_count') ?? 10),
+                'minutes' => (int) ($settings->get('spamguard_ip_rate_limit_minutes') ?? 10),
+                'trusted' => (array) ($settings->get('spamguard_ip_trusted') ?? []),
+            ],
             'ipReputation' => [
                 'hours' => (int) ($settings->get('spamguard_ip_reputation_hours') ?? 24),
                 'trusted' => (array) ($settings->get('spamguard_ip_trusted') ?? []),

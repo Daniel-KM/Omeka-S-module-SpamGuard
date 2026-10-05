@@ -30,10 +30,11 @@ class SpamChecker
             }
         }
         $result = new SpamResult($reasons, $details);
-        // Record the spams in the journal, so the reputation of the ip covers
-        // all the modules. The calling module sets its name as source.
-        if ($result->isSpam() && $this->spamLog) {
-            $this->spamLog->record($context->ip, (string) ($context->extra['source'] ?? 'unknown'), $reasons, true);
+        // Record every check in the journal: the spams feed the reputation of
+        // the ip across the modules, and all the submissions feed the rate
+        // limit by ip. The calling module sets its name as source.
+        if ($this->spamLog) {
+            $this->spamLog->record($context->ip, (string) ($context->extra['source'] ?? 'unknown'), $reasons, $result->isSpam());
         }
         return $result;
     }

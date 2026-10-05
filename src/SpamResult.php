@@ -16,6 +16,7 @@ final class SpamResult
         'bannedIp',
         'dnsbl',
         'honeypot',
+        'ipRateLimit',
         'ipReputation',
         'keyword',
         'linkTld',

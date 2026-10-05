@@ -55,6 +55,21 @@ class SpamLog
     }
 
     /**
+     * Number of submissions of the ip during the last minutes, spam or not.
+     */
+    public function countRecent(string $ip, int $minutes): int
+    {
+        if ($ip === '' || $minutes <= 0) {
+            return 0;
+        }
+        $since = date('Y-m-d H:i:s', strtotime('-' . $minutes . ' minutes'));
+        return (int) $this->connection->executeQuery(
+            'SELECT COUNT(*) FROM `spam_log` WHERE `ip` = :ip AND `created` >= :since',
+            ['ip' => $ip, 'since' => $since]
+        )->fetchOne();
+    }
+
+    /**
      * Has the ip sent a spam detected by one of the given reasons recently?
      *
      * A later decision of an admin that a message of this ip is not a spam

@@ -27,6 +27,7 @@ class ConfigForm extends Form
                         'dnsbl' => 'Client IP DNSBL check', // @translate
                         'linkTld' => 'Links to abused top level domains', // @translate
                         'bannedIp' => 'Banned IPs', // @translate
+                        'ipRateLimit' => 'Too many submissions from the same ip in any module (see the trusted ips below)', // @translate
                         'ipReputation' => 'Reputation of the ip (recent spams of any module, see the trusted ips below)', // @translate
                     ],
                 ],
@@ -120,6 +121,31 @@ class ConfigForm extends Form
                 'attributes' => [
                     'id' => 'spamguard_dnsbl_zones',
                     'rows' => 5,
+                ],
+            ])
+            ->add([
+                'name' => 'spamguard_ip_rate_limit_count',
+                'type' => CommonElement\OptionalNumber::class,
+                'options' => [
+                    'label' => 'Maximum number of submissions from the same ip', // @translate
+                    'info' => 'Counted in the journal for all the modules, whatever the session, during the number of minutes below. Keep it high: the visitors of an institution may share a few public ips.', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'spamguard_ip_rate_limit_count',
+                    'min' => 0,
+                    'step' => 1,
+                ],
+            ])
+            ->add([
+                'name' => 'spamguard_ip_rate_limit_minutes',
+                'type' => CommonElement\OptionalNumber::class,
+                'options' => [
+                    'label' => 'Minutes during which the submissions of an ip are counted', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'spamguard_ip_rate_limit_minutes',
+                    'min' => 0,
+                    'step' => 1,
                 ],
             ])
             ->add([
