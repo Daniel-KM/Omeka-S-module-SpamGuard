@@ -7,6 +7,7 @@ return [
         'factories' => [
             'SpamGuard\FormToken' => Service\FormTokenFactory::class,
             'SpamGuard\SpamChecker' => Service\SpamCheckerFactory::class,
+            'SpamGuard\SpamLog' => Service\SpamLogFactory::class,
             'SpamGuard\SpamStrategyManager' => Service\SpamStrategyManagerFactory::class,
         ],
     ],

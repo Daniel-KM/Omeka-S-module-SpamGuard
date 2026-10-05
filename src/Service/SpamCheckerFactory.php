@@ -27,6 +27,7 @@ class SpamCheckerFactory implements FactoryInterface
             $services->get('SpamGuard\SpamStrategyManager'),
             (array) $enabled,
             $stratSettings,
+            $services->get('SpamGuard\SpamLog'),
         );
     }
 }
