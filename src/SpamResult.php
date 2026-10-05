@@ -7,7 +7,9 @@ final class SpamResult
     /**
      * Reasons reliable enough to be certain on their own: they come from the
      * content, the ip or a trap, not from timing or session state, so one of
-     * them makes the submission a spam.
+     * them makes the submission a spam. The proof of work is one of them: it is
+     * the only barrier against the bots that do not run javascript, and the
+     * calling module may skip it for the visitors who cannot solve it.
      */
     const STRONG_REASONS = [
         'admin',
@@ -17,14 +19,15 @@ final class SpamResult
         'ipReputation',
         'keyword',
         'linkTld',
+        'powChallenge',
         'url',
         'urlCount',
     ];
 
     /**
-     * Weight of a weak reason (timing, session, dns of the sender domain, proof
-     * of work): a false positive is plausible, so one of them is a hint only
-     * and two are needed to make a spam.
+     * Weight of a weak reason (timing, session, dns of the sender domain): a
+     * false positive is plausible, so one of them is a hint only and two are
+     * needed to make a spam.
      */
     const WEAK_WEIGHT = 1;
 
