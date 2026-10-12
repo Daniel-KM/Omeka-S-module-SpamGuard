@@ -77,3 +77,22 @@ if (version_compare((string) $oldVersion, '3.4.1', '<')) {
     );
     $messenger->addSuccess($message);
 }
+
+if (version_compare((string) $oldVersion, '3.4.2', '<')) {
+    // The default list "zen" includes the policy block list of Spamhaus, that
+    // lists the consumer access ranges, so it flags many legitimate visitors.
+    // Replace it by "sbl-xbl" (spam sources and compromised hosts only), and
+    // keep the other zones added manually.
+    $zones = (array) ($settings->get('spamguard_dnsbl_zones') ?: []);
+    $index = array_search('zen.spamhaus.org', array_map('trim', array_map('strval', $zones)), true);
+    if ($index !== false) {
+        $zones[$index] = 'sbl-xbl.spamhaus.org';
+        $zones = array_values(array_unique($zones));
+        $settings->set('spamguard_dnsbl_zones', $zones);
+        $message = new PsrMessage(
+            'The dnsbl zone "zen.spamhaus.org" was replaced by "sbl-xbl.spamhaus.org": "zen" includes the policy block list, that lists the consumer access ranges and flags legitimate visitors. Its answers are ignored anyway.' // @translate
+        );
+        $messenger->addWarning($message);
+        $logger->notice($message->getMessage());
+    }
+}
