@@ -24,6 +24,10 @@ msgstr "Une nouvelle stratégie marque spam les messages contenant un lien vers 
 msgid "A new strategy, disabled by default, marks as spam a message sent from an ip that sent a spam detected by a reliable check in any module during the last hours. Before enabling it, add the networks of your institution to the trusted ips in the config form, since its visitors may share a few public ips."
 msgstr "Une nouvelle stratégie, désactivée par défaut, marque spam tout message provenant d'une adresse ip ayant envoyé un spam détecté par un contrôle fiable par un module au cours des dernières heures. Avant de l'activer, ajoutez les réseaux de votre établissement à la liste des adresses ip de confiance dans le formulaire de configuration, car ses visiteurs peuvent partager certaines adresses ip publiques."
 
+#: data/scripts/upgrade.php:93
+msgid "The dnsbl zone \"zen.spamhaus.org\" was replaced by \"sbl-xbl.spamhaus.org\": \"zen\" includes the policy block list, that lists the consumer access ranges and flags legitimate visitors. Its answers are ignored anyway."
+msgstr "La zone DNSBL « zen.spamhaus.org » a été remplacée par « sbl-xbl.spamhaus.org » : « zen » contient la liste de blocage de politique, qui répertorie les plages d'adresses des utilisateurs et signale les visiteurs légitimes. Ses réponses sont de toute façon ignorées."
+
 #: src/Form/ConfigForm.php:18
 msgid "Enabled spam strategies"
 msgstr "Stratégies anti-spam activées"
@@ -125,8 +129,8 @@ msgid "DNSBL zones"
 msgstr "Zones DNSBL"
 
 #: src/Form/ConfigForm.php:118
-msgid "One per line, like zen.spamhaus.org."
-msgstr "Une par ligne, comme zen.spamhaus.org."
+msgid "One per line, like sbl-xbl.spamhaus.org. For the zones of Spamhaus, the answers of the policy block list (consumer access ranges, included in zen.spamhaus.org) are ignored."
+msgstr "Une par ligne, comme sbl-xbl.spamhaus.org. Pour les zones de Spamhaus, les réponses de la liste de blocage de politique (plages d'accès des particuliers, incluses dans zen.spamhaus.org) sont ignorées."
 
 #: src/Form/ConfigForm.php:129
 msgid "Hours during which an ip that sent a spam is blocked"
@@ -147,3 +151,6 @@ msgstr "Une adresse ip ou une plage (cidr) par ligne, par exemple les réseaux d
 #: src/Form/ConfigForm.php:156
 msgid "One per line, CIDR accepted."
 msgstr "Une par ligne, CIDR acceptées."
+
+#~ msgid "One per line, like zen.spamhaus.org."
+#~ msgstr "Une par ligne, comme zen.spamhaus.org."

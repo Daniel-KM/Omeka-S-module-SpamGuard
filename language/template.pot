@@ -28,6 +28,14 @@ msgid ""
 "ips."
 msgstr ""
 
+#: data/scripts/upgrade.php:93
+msgid ""
+"The dnsbl zone \"zen.spamhaus.org\" was replaced by \"sbl-"
+"xbl.spamhaus.org\": \"zen\" includes the policy block list, that lists the "
+"consumer access ranges and flags legitimate visitors. Its answers are "
+"ignored anyway."
+msgstr ""
+
 #: src/Form/ConfigForm.php:18
 msgid "Enabled spam strategies"
 msgstr ""
@@ -139,7 +147,10 @@ msgid "DNSBL zones"
 msgstr ""
 
 #: src/Form/ConfigForm.php:118
-msgid "One per line, like zen.spamhaus.org."
+msgid ""
+"One per line, like sbl-xbl.spamhaus.org. For the zones of Spamhaus, the "
+"answers of the policy block list (consumer access ranges, included in "
+"zen.spamhaus.org) are ignored."
 msgstr ""
 
 #: src/Form/ConfigForm.php:129
