@@ -126,7 +126,7 @@ return [
                 'xyz',
             ],
             'spamguard_dnsbl_zones' => [
-                'zen.spamhaus.org',
+                'sbl-xbl.spamhaus.org',
             ],
             'spamguard_banned_ips' => [],
             'spamguard_ip_reputation_hours' => 24,

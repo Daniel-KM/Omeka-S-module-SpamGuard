@@ -62,6 +62,26 @@ class DnsblTest extends TestCase
         $listed ? $this->assertIsArray($r) : $this->assertNull($r);
     }
 
+    /**
+     * @dataProvider policyCodeProvider
+     */
+    public function testPolicyCodesAreIgnoredForSpamhausOnly(string $zone, bool $listed): void
+    {
+        $s = new Dnsbl(fn ($q) => ['127.0.0.10']);
+        $r = $s->check(new SpamContext(ip: '1.2.3.4'), ['zones' => [$zone]]);
+        $listed ? $this->assertIsArray($r) : $this->assertNull($r);
+    }
+
+    public function policyCodeProvider(): array
+    {
+        return [
+            'spamhaus zen' => ['zen.spamhaus.org', false],
+            'spamhaus dqs' => ['key.zen.dq.spamhaus.net', false],
+            'other list' => ['dnsbl.sorbs.net', true],
+            'lookalike domain' => ['zen.notspamhaus.org', true],
+        ];
+    }
+
     public function answerProvider(): array
     {
         return [
